@@ -98,7 +98,7 @@
         <dependency>
             <groupId>com.github.JadedMC</groupId>
             <artifactId>NanoID</artifactId>
-            <version>5c87c0157f</version>
+            <version>744db32e90</version>
             <scope>compile</scope>
         </dependency>
     </dependencies>

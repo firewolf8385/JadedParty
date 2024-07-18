@@ -72,7 +72,16 @@ public class Party {
      */
     public Party(@NotNull final JadedPartyBukkit plugin, @NotNull final Player leader) {
         this.plugin = plugin;
-        this.nanoID = new NanoID(); // TODO: Party ID settings.
+
+        // Generates the party's NanoID with configured settings in config.yml.
+        final NanoID.Settings nanoIDSettings = new NanoID.Settings()
+                .setAlphabet(plugin.getConfigManager().getConfig().getString("Party.ID.alphabet"))
+                .setMinimumSize(plugin.getConfigManager().getConfig().getInt("Party.ID.minLength"))
+                .setMaximumSize(plugin.getConfigManager().getConfig().getInt("Party.ID.maxLength"))
+                .setPrefix(plugin.getConfigManager().getConfig().getString("Party.ID.prefix"));
+        this.nanoID = new NanoID(nanoIDSettings);
+
+        // Adds the player to their party as the leader.
         addPlayer(leader, PartyRole.LEADER);
     }
 

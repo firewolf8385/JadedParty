@@ -50,3 +50,7 @@ Party:
 
     # The maximum length of the party's generated ID. Must be greater than or equal to minLength.
     maxLength: 8
+
+    # Configurable prefix to include in front of the randomly generated section of the ID.
+    # Does not count towards the min/max length.
+    prefix: ""
