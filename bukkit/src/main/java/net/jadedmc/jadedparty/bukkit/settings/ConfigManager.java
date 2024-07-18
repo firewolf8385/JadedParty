@@ -122,11 +122,15 @@ public final class ConfigManager {
      * @return Configured String of the message, with placeholders.
      */
     public String getMessage(@NotNull final Player player, final ConfigMessage configMessage) {
-        final String message = getMessage(configMessage);
+        String message = getMessage(configMessage);
 
         // Process placeholders if PlaceholderAPI is installed.
         if(plugin.getHookManager().usePlaceholderAPI()) {
             return PlaceholderAPI.setPlaceholders(player, message);
+        }
+        else {
+            // Non-PlaceholderAPI placeholders.
+            message = message.replace("%player_name%", player.getName());
         }
 
         return message;

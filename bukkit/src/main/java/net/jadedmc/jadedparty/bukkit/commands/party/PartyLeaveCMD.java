@@ -66,9 +66,7 @@ public class PartyLeaveCMD {
         }
 
         // Sends the leave message with placeholders processed.
-        final String leaveMessage = plugin.getConfigManager().getMessage(player, ConfigMessage.PARTY_LEAVE_PLAYER_LEFT)
-                        .replace("%player_name%", partyPlayer.getName());
-        party.sendMessage(leaveMessage);
+        party.sendMessage(plugin.getConfigManager().getMessage(player, ConfigMessage.PARTY_LEAVE_PLAYER_LEFT));
 
         // Updates the party through pub/sub.
         plugin.getServer().getScheduler().runTaskAsynchronously(plugin, () -> {
