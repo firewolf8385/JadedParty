@@ -26,6 +26,8 @@ package net.jadedmc.jadedparty.bukkit;
 
 import net.jadedmc.jadedparty.bukkit.commands.party.PartyCMD;
 import net.jadedmc.jadedparty.bukkit.databases.Redis;
+import net.jadedmc.jadedparty.bukkit.listeners.PlayerJoinListener;
+import net.jadedmc.jadedparty.bukkit.listeners.PlayerQuitListener;
 import net.jadedmc.jadedparty.bukkit.party.PartyManager;
 import net.jadedmc.jadedparty.bukkit.settings.ConfigManager;
 import net.jadedmc.jadedparty.bukkit.settings.HookManager;
@@ -51,6 +53,10 @@ public class JadedPartyBukkit extends JavaPlugin {
 
         // Register commands.
         getCommand("party").setExecutor(new PartyCMD(this));
+
+        // Register Listeners
+        getServer().getPluginManager().registerEvents(new PlayerJoinListener(this), this);
+        getServer().getPluginManager().registerEvents(new PlayerQuitListener(this), this);
     }
 
     @Override

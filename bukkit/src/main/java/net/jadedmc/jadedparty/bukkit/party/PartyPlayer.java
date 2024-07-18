@@ -24,22 +24,27 @@
  */
 package net.jadedmc.jadedparty.bukkit.party;
 
+import net.jadedmc.jadedparty.bukkit.JadedPartyBukkit;
 import net.jadedmc.jadedparty.bukkit.utils.player.PluginPlayer;
 import org.bson.Document;
 import org.bukkit.entity.Player;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.UUID;
 
 public class PartyPlayer extends PluginPlayer {
+    private final JadedPartyBukkit plugin;
     private PartyRole role;
 
-    public PartyPlayer(final Document document) {
+    public PartyPlayer(@NotNull final JadedPartyBukkit plugin, @NotNull final Document document) {
         super(UUID.fromString(document.getString("uuid")), document.getString("username"));
+        this.plugin = plugin;
         this.role = PartyRole.valueOf(document.getString("role"));
     }
 
-    public PartyPlayer(final Player player, final PartyRole role) {
+    public PartyPlayer(@NotNull final JadedPartyBukkit plugin, @NotNull final Player player, final PartyRole role) {
         super(player.getUniqueId(), player.getName());
+        this.plugin = plugin;
         this.role = role;
     }
 
@@ -52,10 +57,31 @@ public class PartyPlayer extends PluginPlayer {
         return (player != null && player.isOnline());
     }
 
+    public void setRole(final PartyRole role) {
+        this.role = role;
+    }
+
     public Document toDocument() {
         return new Document()
                 .append("uuid", getUniqueId().toString())
                 .append("username", getName())
                 .append("role", role.toString());
+    }
+
+    public void update(@NotNull final Document document) {
+        this.role = PartyRole.valueOf(document.getString("role"));
+    }
+
+    public void update() {
+        plugin.getServer().getScheduler().runTaskAsynchronously(plugin, () -> {
+            plugin.getConfigManager().getCache().setPlayerDocument(getUniqueId().toString(), toDocument());
+            plugin.getConfigManager().getCache().publish("party", "updateplayer", getUniqueId().toString());
+        });
+    }
+
+    public void silentUpdate() {
+        plugin.getServer().getScheduler().runTaskAsynchronously(plugin, () -> {
+            plugin.getConfigManager().getCache().setPlayerDocument(getUniqueId().toString(), toDocument());
+        });
     }
 }

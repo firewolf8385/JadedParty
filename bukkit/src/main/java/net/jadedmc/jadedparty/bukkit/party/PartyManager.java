@@ -25,11 +25,14 @@
 package net.jadedmc.jadedparty.bukkit.party;
 
 import net.jadedmc.jadedparty.bukkit.JadedPartyBukkit;
+import net.jadedmc.jadedparty.bukkit.utils.player.PlayerMap;
 import net.jadedmc.nanoid.NanoID;
 import org.bson.Document;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+
+import java.util.Collection;
 
 /**
  * Manages all existing party, both Local (stored in memory) and Remote (stored in Redis).
@@ -37,6 +40,7 @@ import org.jetbrains.annotations.Nullable;
 public class PartyManager {
     private final JadedPartyBukkit plugin;
     private final PartySet localParties = new PartySet();
+    private final PlayerMap<PartyPlayer> localPartyPlayers = new PlayerMap<>();
 
     /**
      * Creates the party manager.
@@ -67,11 +71,38 @@ public class PartyManager {
     }
 
     /**
+     * Caches a Player in the local PartyPlayer cache.
+     * @param player Player to be cached.
+     */
+    public PartyPlayer cachePartyPlayer(@NotNull final Player player) {
+        final PartyPlayer partyPlayer = new PartyPlayer(plugin, player, PartyRole.NONE);
+        this.localPartyPlayers.add(partyPlayer);
+
+        return partyPlayer;
+    }
+
+    /**
+     * Caches a Player in the local PartyPlayer cache using their document.
+     * @param document Document to be cached.
+     */
+    public void cachePartyPlayer(@NotNull final Document document) {
+        this.localPartyPlayers.add(new PartyPlayer(plugin, document));
+    }
+
+    /**
      * Deletes a Party from the local Party cache.
      * @param party Party to be deleted.
      */
     public void deleteLocalParty(@NotNull final Party party) {
         this.localParties.remove(party);
+    }
+
+    /**
+     * Deletes a PartyPlayer from the local Party Player cache.
+     * @param player Player to be deleted.
+     */
+    public void deleteLocalPartyPlayer(@NotNull final Player player) {
+        this.localPartyPlayers.remove(player);
     }
 
     /**
@@ -92,6 +123,15 @@ public class PartyManager {
     @NotNull
     public PartySet getLocalParties() {
         return this.localParties;
+    }
+
+    /**
+     * Retrieves a PlayerMap of all locally cached PartyPlayers.
+     * @return PlayerMap containing PartyPlayers stored in RAM.
+     */
+    @NotNull
+    public PlayerMap<PartyPlayer> getLocalPartyPlayers() {
+        return this.localPartyPlayers;
     }
 
     /**
@@ -117,9 +157,9 @@ public class PartyManager {
     }
 
     /**
-     * Retrieves a Set of all parties stored in Redis.
+     * Retrieves a Set of all parties stored in the remote cache.
      * <b>Warning: Database operation. Call asynchronously.</b>
-     * @return Set containing Parties grabbed from Redis.
+     * @return Set containing Parties grabbed from the remote cache.
      */
     @NotNull
     public PartySet getRemoteParties() {
@@ -130,5 +170,21 @@ public class PartyManager {
         }
 
         return remoteParties;
+    }
+
+    /**
+     * Retrieves a PlayerMap of all party players stored in the remote cache.
+     * <b>Warning: Database operation. Call asynchronously.</b>
+     * @return PlayerMap containing all PartyPlayers grabbed from the remote cache.
+     */
+    @NotNull
+    public PlayerMap<PartyPlayer> getRemotePartyPlayers() {
+        final PlayerMap<PartyPlayer> remotePartyPlayers = new PlayerMap<>();
+
+        for(final Document document : plugin.getConfigManager().getCache().getAllPlayerDocuments()) {
+            remotePartyPlayers.add(new PartyPlayer(plugin, document));
+        }
+
+        return remotePartyPlayers;
     }
 }

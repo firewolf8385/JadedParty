@@ -28,6 +28,7 @@ import com.google.common.io.ByteArrayDataOutput;
 import com.google.common.io.ByteStreams;
 import net.jadedmc.jadedparty.bukkit.JadedPartyBukkit;
 import net.jadedmc.jadedparty.bukkit.party.Party;
+import net.jadedmc.jadedparty.bukkit.party.PartyPlayer;
 import net.jadedmc.jadedparty.bukkit.utils.StringUtils;
 import net.jadedmc.jadedparty.bukkit.utils.chat.ChatUtils;
 import net.jadedmc.nanoid.NanoID;
@@ -135,6 +136,18 @@ public class MessageProcessor {
 
                     final Document document = plugin.getConfigManager().getCache().getPartyDocument(partyNanoID.toString());
                     party.update(document);
+                }
+
+                case "updateplayer" -> {
+                    final UUID playerUUID = UUID.fromString(args[1]);
+                    final PartyPlayer partyPlayer = plugin.getPartyManager().getLocalPartyPlayers().get(playerUUID);
+
+                    if(partyPlayer == null) {
+                        return;
+                    }
+
+                    final Document document = plugin.getConfigManager().getCache().getPlayerDocument(playerUUID.toString());
+                    partyPlayer.update(document);
                 }
             }
         });

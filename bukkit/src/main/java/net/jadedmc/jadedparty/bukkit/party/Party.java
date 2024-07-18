@@ -55,7 +55,7 @@ public class Party {
         // Load the players from the document.
         final Document playersDocument = document.get("players", Document.class);
         for(final String player : playersDocument.keySet()) {
-            players.add(new PartyPlayer(playersDocument.get(player, Document.class)));
+            players.add(new PartyPlayer(plugin, playersDocument.get(player, Document.class)));
         }
 
         // Load the pending invites of the party.
@@ -91,7 +91,11 @@ public class Party {
      * @param role Role the player has.
      */
     public void addPlayer(@NotNull final Player player, final PartyRole role) {
-        this.players.add(new PartyPlayer(player, role));
+        final PartyPlayer partyPlayer = plugin.getPartyManager().getLocalPartyPlayers().get(player);
+        partyPlayer.setRole(role);
+        partyPlayer.update();
+
+        this.players.add(partyPlayer);
 
         // Removes any potential pending invites for the player.
         this.invites.remove(player.getUniqueId());
@@ -104,6 +108,11 @@ public class Party {
         plugin.getServer().getScheduler().runTaskAsynchronously(plugin, () -> {
             plugin.getConfigManager().getCache().publish("party", "disband", this.nanoID.toString());
             plugin.getConfigManager().getCache().deletePartyDocument(this.nanoID.toString());
+
+            for(final PartyPlayer player : players.values()) {
+                player.setRole(PartyRole.NONE);
+                player.update();
+            }
         });
     }
 
@@ -167,7 +176,13 @@ public class Party {
      * @param playerUUID UUID of the player to remove.
      */
     public void removePlayer(@NotNull final UUID playerUUID) {
-        players.remove(playerUUID);
+        plugin.getServer().getScheduler().runTaskAsynchronously(plugin, () -> {
+            final PartyPlayer partyPlayer = this.players.get(playerUUID);
+            partyPlayer.setRole(PartyRole.NONE);
+            partyPlayer.update();
+
+            players.remove(playerUUID);
+        });
     }
 
     /**
@@ -238,7 +253,7 @@ public class Party {
         // Loads the party players.
         final Document playersDocument = document.get("players", Document.class);
         for(@NotNull final String player : playersDocument.keySet()) {
-            players.add(new PartyPlayer(playersDocument.get(player, Document.class)));
+            players.add(new PartyPlayer(plugin, playersDocument.get(player, Document.class)));
         }
 
         // Empty cached invites.
