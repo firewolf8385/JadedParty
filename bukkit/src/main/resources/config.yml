@@ -1,0 +1,52 @@
+#      _____                  __                  __  _______                        __
+#     /     |                /  |                /  |/       \                      /  |
+#     $$$$$ |  ______    ____$$ |  ______    ____$$ |$$$$$$$  | ______    ______   _$$ |_    __    __
+#        $$ | /      \  /    $$ | /      \  /    $$ |$$ |__$$ |/      \  /      \ / $$   |  /  |  /  |
+#   __   $$ | $$$$$$  |/$$$$$$$ |/$$$$$$  |/$$$$$$$ |$$    $$/ $$$$$$  |/$$$$$$  |$$$$$$/   $$ |  $$ |
+#  /  |  $$ | /    $$ |$$ |  $$ |$$    $$ |$$ |  $$ |$$$$$$$/  /    $$ |$$ |  $$/   $$ | __ $$ |  $$ |
+#  $$ \__$$ |/$$$$$$$ |$$ \__$$ |$$$$$$$$/ $$ \__$$ |$$ |     /$$$$$$$ |$$ |        $$ |/  |$$ \__$$ |
+#  $$    $$/ $$    $$ |$$    $$ |$$       |$$    $$ |$$ |     $$    $$ |$$ |        $$  $$/ $$    $$ |
+#   $$$$$$/   $$$$$$$/  $$$$$$$/  $$$$$$$/  $$$$$$$/ $$/       $$$$$$$/ $$/          $$$$/   $$$$$$$ |
+#                                                                                           /  \__$$ |
+#                                                                                           $$    $$/
+#                                                                                            $$$$$$/
+#  Version ${project.version}
+#  By JadedMC
+
+# Toggles Debug Mode. When enabled, the plugin will log everything it is doing.
+# Useful for diagnosing cross-server communication issues.
+debugMode: false
+
+# Toggles standalone mode. When enabled, the plugin will not attempt to sync parties between servers.
+# Instead, it will automatically remove players from the party when they leave.
+standalone: true
+
+Cache:
+  # Changes how party data is cached and shared.
+  # Requires a server restart to take effect.
+  # Possible Types:
+  #  MEMORY: Stores data in the server's ram. Does not sync parties between servers.
+  #  REDIS: Stores party data in a Redis database. Syncs parties between multiple servers and proxies.
+  type: MEMORY
+
+  # The connection information for the Redis server.
+  # Only use if you have "type" set to "REDIS".
+  Redis:
+    host: "127.0.0.1"
+    port: 6379
+    username: ""
+    password: ""
+
+Party:
+
+  # Party ids are stored as "NanoIDs".
+  # The following settings change how those Ids are generated.
+  ID:
+    # The
+    alphabet: "abcdefghijklmnopqrstuvwxyz0123456789"
+
+    # The minimum length of the party's generated ID.
+    minLength: 8
+
+    # The maximum length of the party's generated ID. Must be greater than or equal to minLength.
+    maxLength: 8
