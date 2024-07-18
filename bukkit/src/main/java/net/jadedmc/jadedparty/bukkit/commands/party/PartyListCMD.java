@@ -27,6 +27,7 @@ package net.jadedmc.jadedparty.bukkit.commands.party;
 import net.jadedmc.jadedparty.bukkit.JadedPartyBukkit;
 import net.jadedmc.jadedparty.bukkit.party.Party;
 import net.jadedmc.jadedparty.bukkit.party.PartyPlayer;
+import net.jadedmc.jadedparty.bukkit.settings.ConfigMessage;
 import net.jadedmc.jadedparty.bukkit.utils.StringUtils;
 import net.jadedmc.jadedparty.bukkit.utils.chat.ChatUtils;
 import org.bukkit.entity.Player;
@@ -38,16 +39,25 @@ import java.util.List;
 public class PartyListCMD {
     private final JadedPartyBukkit plugin;
 
+    /**
+     * Creates the sub command.
+     * @param plugin Instance of the plugin.
+     */
     public PartyListCMD(@NotNull final JadedPartyBukkit plugin) {
         this.plugin = plugin;
     }
 
+    /**
+     * Executes the command.
+     * @param player Player running the command.
+     * @param args Command arguments.
+     */
     public void execute(@NotNull final Player player, final String[] args) {
 
         // Makes sure the player is in a party.
         final Party party = plugin.getPartyManager().getLocalPartyFromPlayer(player);
         if(party == null) {
-            ChatUtils.chat(player, "<red><bold>Error</bold> <dark_gray>» <red>You are not in a party! Create one with /p create.");
+            ChatUtils.chat(player, plugin.getConfigManager().getMessage(ConfigMessage.PARTY_ERROR_NOT_IN_PARTY));
             // TODO: Remove debug message.
             System.out.println("No party found. Local Party Size: " + plugin.getPartyManager().getLocalParties().size());
             return;

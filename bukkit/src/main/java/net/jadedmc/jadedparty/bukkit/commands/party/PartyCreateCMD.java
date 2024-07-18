@@ -26,10 +26,16 @@ package net.jadedmc.jadedparty.bukkit.commands.party;
 
 import net.jadedmc.jadedparty.bukkit.JadedPartyBukkit;
 import net.jadedmc.jadedparty.bukkit.party.Party;
+import net.jadedmc.jadedparty.bukkit.settings.ConfigMessage;
 import net.jadedmc.jadedparty.bukkit.utils.chat.ChatUtils;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 
+/**
+ * Powers the /party create command, which lets a player create a new party.
+ *
+ * Usage: /party create
+ */
 public class PartyCreateCMD {
     private final JadedPartyBukkit plugin;
 
@@ -49,14 +55,16 @@ public class PartyCreateCMD {
     public void execute(@NotNull final Player player, final String[] args) {
         // Makes sure the player is not already in a party.
         if(plugin.getPartyManager().getLocalParties().containsPlayer(player)) {
-            ChatUtils.chat(player, "<red><bold>Error</bold> <dark_gray>» <red>You are already in a party.");
+            ChatUtils.chat(player, plugin.getConfigManager().getMessage(ConfigMessage.PARTY_ERROR_ALREADY_IN_PARTY));
             return;
         }
 
+        // Creates the party and updates it through the messaging service.
         final Party party = plugin.getPartyManager().createLocalParty(player);
         party.update();
 
-        ChatUtils.chat(player, "<green><bold>Party</bold> <dark_gray>» <green>Party has been created.");
+        // Tell the player the party was created.
+        ChatUtils.chat(player, plugin.getConfigManager().getMessage(ConfigMessage.PARTY_CREATE_PARTY_CREATED));
     }
 
 }

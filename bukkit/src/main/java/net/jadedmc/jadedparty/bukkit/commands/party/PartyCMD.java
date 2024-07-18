@@ -25,6 +25,7 @@
 package net.jadedmc.jadedparty.bukkit.commands.party;
 
 import net.jadedmc.jadedparty.bukkit.JadedPartyBukkit;
+import net.jadedmc.jadedparty.bukkit.settings.ConfigMessage;
 import net.jadedmc.jadedparty.bukkit.utils.chat.ChatUtils;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -41,6 +42,10 @@ public class PartyCMD implements CommandExecutor {
     private final PartyLeaveCMD partyLeaveCMD;
     private final PartyListCMD partyListCMD;
 
+    /**
+     * Creates the command.
+     * @param plugin Instance of the plugin.
+     */
     public PartyCMD(@NotNull final JadedPartyBukkit plugin) {
         this.plugin = plugin;
 
@@ -53,18 +58,29 @@ public class PartyCMD implements CommandExecutor {
         this.partyListCMD = new PartyListCMD(plugin);
     }
 
+    /**
+     * Executes the command.
+     * @param sender Sender of the command.
+     * @param command Command being sent.
+     * @param label Actual String being used to start the command.
+     * @param args Command arguments.
+     * @return true.
+     */
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
+        // Only players can use party commands.
         if(!(sender instanceof Player player)) {
-            ChatUtils.chat(sender, "<red><bold>Error</bold> <dark_gray>» <red>Only players can use that command.");
+            ChatUtils.chat(sender, plugin.getConfigManager().getMessage(ConfigMessage.PARTY_ERROR_NOT_A_PLAYER));
             return true;
         }
 
+        // If no arguments are provided, sends the player to the help screen.
         if(args.length == 0) {
             partyHelpCMD.execute(player, args);
             return true;
         }
 
+        // Processes the sub command.
         switch(args[0].toLowerCase()) {
             case "accept" -> partyAcceptCMD.execute(player, args);
             case "create" -> partyCreateCMD.execute(player, args);

@@ -28,32 +28,50 @@ import net.jadedmc.jadedparty.bukkit.JadedPartyBukkit;
 import net.jadedmc.jadedparty.bukkit.party.Party;
 import net.jadedmc.jadedparty.bukkit.party.PartyPlayer;
 import net.jadedmc.jadedparty.bukkit.party.PartyRole;
+import net.jadedmc.jadedparty.bukkit.settings.ConfigMessage;
 import net.jadedmc.jadedparty.bukkit.utils.chat.ChatUtils;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 
+/**
+ * Powers the /party disband command, which allows the player to delete their party.
+ *
+ * Usage: /party disband
+ */
 public class PartyDisbandCMD {
     private final JadedPartyBukkit plugin;
 
+    /**
+     * Creates the sub command.
+     * @param plugin Instance of the plugin.
+     */
     public PartyDisbandCMD(@NotNull final JadedPartyBukkit plugin) {
         this.plugin = plugin;
     }
 
+    /**
+     * Executes the command.
+     * @param player Player running the command.
+     * @param args Command arguments.
+     */
     public void execute(@NotNull final Player player, final String[] args) {
         final Party party = plugin.getPartyManager().getLocalPartyFromPlayer(player);
 
+        // Makes sure the player is in a party.
         if(party == null) {
-            ChatUtils.chat(player, "<red><bold>Error</bold> <dark_gray>» <red>You are not in a party!");
+            ChatUtils.chat(player, plugin.getConfigManager().getMessage(ConfigMessage.PARTY_ERROR_NOT_IN_PARTY));
             return;
         }
 
+        // Only allow the party leader to disband the party.
         final PartyPlayer partyPlayer = party.getPlayer(player.getUniqueId());
         if(partyPlayer.getRole() != PartyRole.LEADER) {
             ChatUtils.chat(player, "<red><bold>Error</bold> <dark_gray>» <red>You do not have permission to disband the party!");
             return;
         }
 
-        party.sendMessage("<green><bold>Party</bold> <dark_gray>» <green>The party has been disbanded.");
+        // Disbands the party.
+        party.sendMessage(plugin.getConfigManager().getMessage(ConfigMessage.PARTY_DISBAND_PARTY_DISBANDED));
         party.disband();
     }
 }

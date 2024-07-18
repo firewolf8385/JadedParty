@@ -28,6 +28,7 @@ import net.jadedmc.jadedparty.bukkit.JadedPartyBukkit;
 import net.jadedmc.jadedparty.bukkit.party.Party;
 import net.jadedmc.jadedparty.bukkit.party.PartyPlayer;
 import net.jadedmc.jadedparty.bukkit.party.PartyRole;
+import net.jadedmc.jadedparty.bukkit.settings.ConfigMessage;
 import net.jadedmc.jadedparty.bukkit.utils.chat.ChatUtils;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
@@ -35,26 +36,41 @@ import org.jetbrains.annotations.NotNull;
 public class PartyLeaveCMD {
     private final JadedPartyBukkit plugin;
 
+    /**
+     * Creates the sub command.
+     * @param plugin Instance of the plugin.
+     */
     public PartyLeaveCMD(@NotNull final JadedPartyBukkit plugin) {
         this.plugin = plugin;
     }
 
+    /**
+     * Executes the command.
+     * @param player Player running the command.
+     * @param args Command arguments.
+     */
     public void execute(@NotNull final Player player, final String[] args) {
         // Makes sure the player is in a party.
         final Party party = plugin.getPartyManager().getLocalPartyFromPlayer(player);
         if(party == null) {
-            ChatUtils.chat(player, "<red><bold>Error</bold> <dark_gray>» <red>You are not in a party!");
+            ChatUtils.chat(player, plugin.getConfigManager().getMessage(ConfigMessage.PARTY_ERROR_NOT_IN_PARTY));
             return;
         }
 
+        // If the party leader leaves, disband the party instead.
         final PartyPlayer partyPlayer = party.getPlayer(player);
         if(partyPlayer.getRole() == PartyRole.LEADER) {
-            party.sendMessage("<green><bold>Party</bold> <dark_gray>» <green>The party has been disbanded.");
+            party.sendMessage(plugin.getConfigManager().getMessage(ConfigMessage.PARTY_DISBAND_PARTY_DISBANDED));
             party.disband();
             return;
         }
 
-        party.sendMessage("<green><bold>Party</bold> <dark_gray>» " + "<gray>" + partyPlayer.getName() + " <green>has left the party.");
+        // Sends the leave message with placeholders processed.
+        final String leaveMessage = plugin.getConfigManager().getMessage(ConfigMessage.PARTY_LEAVE_PLAYER_LEFT)
+                        .replace("%player_name%", partyPlayer.getName());
+        party.sendMessage(leaveMessage);
+
+        // Updates the party through pub/sub.
         plugin.getServer().getScheduler().runTaskAsynchronously(plugin, () -> {
             plugin.getConfigManager().getCache().publish("party", "leave", party.getNanoID() + " " + player.getUniqueId());
             party.silentUpdate();

@@ -24,5 +24,50 @@
  */
 package net.jadedmc.jadedparty.bukkit.settings;
 
+import org.jetbrains.annotations.NotNull;
+
+/**
+ * Represents a configurable message in messages.yml.
+ * Used to easily access configured messages and acts as a failsafe if one of them is missing.
+ */
 public enum ConfigMessage {
+    PARTY_ACCEPT_USAGE("Messages.Party.Accept.USAGE", "<red><bold>Usage</bold> <dark_gray>» <red>/party accept [player]"),
+    PARTY_CREATE_PARTY_CREATED("Messages.Party.Create.PARTY_CREATED", "<green><bold>Party</bold> <dark_gray>» <green>Party has been created."),
+    PARTY_DISBAND_NOW_ALLOWED("Messages.Party.Disband.NOT_ALLOWED", "<red><bold>Error</bold> <dark_gray>» <red>You do not have permission to disband the party!"),
+    PARTY_DISBAND_PARTY_DISBANDED("Messages.Party.Disband.PARTY_DISBANDED", "<green><bold>Party</bold> <dark_gray>» <green>The party has been disbanded."),
+    PARTY_ERROR_ALREADY_IN_PARTY("Messages.Party.Error.ALREADY_IN_PARTY", "<red><bold>Error</bold> <dark_gray>» <red>You are already in a party."),
+    PARTY_ERROR_NOT_A_PLAYER("Messages.Party.Error.NOT_A_PLAYER", "<red><bold>Error</bold> <dark_gray>» <red>Only players can use that command."),
+    PARTY_ERROR_NOT_IN_PARTY("Messages.Party.Error.NOT_IN_PARTY", "<red><bold>Error</bold> <dark_gray>» <red>You are not in a party! Create one with /p create."),
+    PARTY_LEAVE_PLAYER_LEFT("Messages.Party.Leave.PLAYER_LEFT", "<green><bold>Party</bold> <dark_gray>» <gray>%player_name% <green>has left the party.");
+
+    private final String key;
+    private final String defaultMessage;
+
+    /**
+     * Creates the config message.
+     * @param key Key value for messages.yml.
+     * @param defaultMessage Default message, used when nothing is found in messages.yml.
+     */
+    ConfigMessage(@NotNull final String key, @NotNull final String defaultMessage) {
+        this.key = key;
+        this.defaultMessage = defaultMessage;
+    }
+
+    /**
+     * Gets the default message.
+     * @return Default message string.
+     */
+    @NotNull
+    public String getDefaultMessage() {
+        return defaultMessage;
+    }
+
+    /**
+     * Get the key of the message in messages.yml.
+     * @return Message key.
+     */
+    @NotNull
+    public String getKey() {
+        return key;
+    }
 }

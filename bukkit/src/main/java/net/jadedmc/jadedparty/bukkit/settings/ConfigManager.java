@@ -30,6 +30,7 @@ import net.jadedmc.jadedparty.bukkit.cache.CacheType;
 import net.jadedmc.jadedparty.bukkit.cache.types.MemoryCache;
 import net.jadedmc.jadedparty.bukkit.cache.types.RedisCache;
 import org.bukkit.configuration.file.FileConfiguration;
+import org.bukkit.configuration.file.YamlConfiguration;
 import org.jetbrains.annotations.NotNull;
 
 import java.io.File;
@@ -38,12 +39,26 @@ public final class ConfigManager {
     private final Cache cache;
     private FileConfiguration config;
     private final File configFile;
+    private FileConfiguration messages;
+    private final File messagesFile;
 
+    /**
+     * Sets up and loads the plugin configuration.
+     * @param plugin Instance of the plugin.
+     */
     public ConfigManager(@NotNull final JadedPartyBukkit plugin) {
+        // Loads config.yml
         this.config = plugin.getConfig();
         this.config.options().copyDefaults(true);
         this.configFile = new File(plugin.getDataFolder(), "config.yml");
         plugin.saveConfig();
+
+        // Loads messages.yml
+        messagesFile = new File(plugin.getDataFolder(), "messages.yml");
+        messages = YamlConfiguration.loadConfiguration(messagesFile);
+        if(!messagesFile.exists()) {
+            plugin.saveResource("messages.yml", false);
+        }
 
         // Get and load the proper cache system.
         final CacheType cacheType = CacheType.valueOf(this.config.getString("Cache.type").toUpperCase());
@@ -65,10 +80,42 @@ public final class ConfigManager {
         return config;
     }
 
+    /**
+     * Gets a configurable message from the config.
+     * @param configMessage Targeted Configurable Message.
+     * @return Configured String of the message.
+     */
+    public String getMessage(final ConfigMessage configMessage) {
+        // Loads the default config message.
+        String message = configMessage.getDefaultMessage();
+
+        // If the message is configured, use that one instead.
+        if(messages.isSet(configMessage.getKey())) {
+            message = messages.getString(configMessage.getKey());
+        }
+
+        // Replace newline characters from YAML with MiniMessage newline.
+        message = message.replace("\\n", "<newline>");
+
+        // TODO: PlaceholderAPI placeholders.
+
+        return message;
+    }
+
+    /**
+     * Check if the plugin is in Debug Mode.
+     * Debug mode logs various information to the console to help diagnose issues.
+     * @return true if in debug mode, false otherwise.
+     */
     public boolean isDebugMode() {
         return this.config.getBoolean("debugMode");
     }
 
+    /**
+     * Check if the plugin is in standalone mode.
+     * Standalone mode does not try to sync data between multiple servers.
+     * @return true if in standalone mode, false otherwise.
+     */
     public boolean isStandalone() {
         return this.config.getBoolean("standalone");
     }

@@ -1,0 +1,15 @@
+Messages:
+    Party:
+      Error:
+        NOT_A_PLAYER: "<red><bold>Error</bold> <dark_gray>» <red>Only players can use that command."
+        ALREADY_IN_PARTY: "<red><bold>Error</bold> <dark_gray>» <red>You are already in a party."
+        NOT_IN_PARTY: "<red><bold>Error</bold> <dark_gray>» <red>You are not in a party! Create one with /p create."
+      Accept:
+        USAGE: "<red><bold>Usage</bold> <dark_gray>» <red>/party accept [player]"
+      Create:
+        PARTY_CREATED: "<green><bold>Party</bold> <dark_gray>» <green>Party has been created."
+      Disband:
+        PARTY_DISBANDED: "<green><bold>Party</bold> <dark_gray>» <green>The party has been disbanded."
+        NOT_ALLOWED: "<red><bold>Error</bold> <dark_gray>» <red>You do not have permission to disband the party!"
+      Leave:
+        PLAYER_LEFT: "<green><bold>Party</bold> <dark_gray>» <gray>%player_name% <green>has left the party."

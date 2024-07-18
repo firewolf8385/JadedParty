@@ -25,25 +25,39 @@
 package net.jadedmc.jadedparty.bukkit.commands.party;
 
 import net.jadedmc.jadedparty.bukkit.JadedPartyBukkit;
+import net.jadedmc.jadedparty.bukkit.settings.ConfigMessage;
 import net.jadedmc.jadedparty.bukkit.utils.chat.ChatUtils;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 
+/**
+ * Powers the /party accept command, which allows a player to accept a party invite.
+ *
+ * Usage: /party accept [player]
+ *   - [player]: The player who sent the invite.
+ */
 public class PartyAcceptCMD {
     private final JadedPartyBukkit plugin;
 
+    /**
+     * Creates the sub command.
+     * @param plugin Instance of the plugin.
+     */
     public PartyAcceptCMD(@NotNull final JadedPartyBukkit plugin) {
         this.plugin = plugin;
     }
 
+    /**
+     * Executes the command.
+     * @param player Player running the command.
+     * @param args Command arguments.
+     */
     public void execute(@NotNull final Player player, final String[] args) {
 
         // Makes sure the player is using the command correctly.
         if(args.length == 1) {
-            ChatUtils.chat(player, "<red><bold>Usage</bold> <dark_gray>» <red>/party accept [player]");
+            ChatUtils.chat(player, plugin.getConfigManager().getMessage(ConfigMessage.PARTY_ACCEPT_USAGE));
             return;
         }
-
-
     }
 }
