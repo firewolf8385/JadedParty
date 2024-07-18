@@ -125,7 +125,7 @@ public class PartyManager {
     public PartySet getRemoteParties() {
         final PartySet remoteParties = new PartySet();
 
-        for(@NotNull final Document document : plugin.getConfigManager().getCache().getAll("parties:*")) {
+        for(@NotNull final Document document : plugin.getConfigManager().getCache().getAllPartyDocuments()) {
             remoteParties.add(new Party(plugin, document));
         }
 

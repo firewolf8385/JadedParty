@@ -103,7 +103,7 @@ public class Party {
     public void disband() {
         plugin.getServer().getScheduler().runTaskAsynchronously(plugin, () -> {
             plugin.getConfigManager().getCache().publish("party", "disband", this.nanoID.toString());
-            plugin.getConfigManager().getCache().delete("parties:" + this.nanoID);
+            plugin.getConfigManager().getCache().deletePartyDocument(this.nanoID.toString());
         });
     }
 
@@ -192,7 +192,7 @@ public class Party {
      */
     public void silentUpdate() {
         plugin.getServer().getScheduler().runTaskAsynchronously(plugin, () -> {
-            plugin.getConfigManager().getCache().set("parties:" + nanoID.toString(), toDocument());
+            plugin.getConfigManager().getCache().setPartyDocument(nanoID.toString(), toDocument());
         });
     }
 
@@ -222,7 +222,7 @@ public class Party {
      */
     public void update() {
         plugin.getServer().getScheduler().runTaskAsynchronously(plugin, () -> {
-            plugin.getConfigManager().getCache().set("parties:" + this.nanoID, toDocument());
+            plugin.getConfigManager().getCache().setPartyDocument(this.nanoID.toString(), toDocument());
             plugin.getConfigManager().getCache().publish("party", "update", this.nanoID.toString());
         });
     }

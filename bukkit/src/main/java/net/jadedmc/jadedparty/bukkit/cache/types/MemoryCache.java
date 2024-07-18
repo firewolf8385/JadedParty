@@ -40,7 +40,8 @@ import java.util.Map;
  */
 public class MemoryCache implements Cache {
     private final JadedPartyBukkit plugin;
-    private final Map<String, Document> documentCache = new HashMap<>();
+    private final Map<String, Document> partyDocumentCache = new HashMap<>();
+    private final Map<String, Document> playerDocumentCache = new HashMap<>();
     private final MessageProcessor messageProcessor;
 
     /**
@@ -53,31 +54,57 @@ public class MemoryCache implements Cache {
     }
 
     /**
-     * Deletes a document from the cache given key.
-     * @param key Key for the document.
+     * Deletes a party document from the cache given key.
+     * @param nanoID NanoID for the document.
      */
     @Override
-    public void delete(@NotNull final String key) {
-        this.documentCache.remove(key);
+    public void deletePartyDocument(@NotNull final String nanoID) {
+        this.partyDocumentCache.remove(nanoID);
     }
 
     /**
-     * Gets a document from the cache based on it's given key.
-     * @param key Key to the document.
+     * Deletes a player document from the cache given key.
+     * @param uuid UUID for the document.
      */
     @Override
-    public Document get(@NotNull final String key) {
-        return this.documentCache.get(key);
+    public void deletePlayerDocument(@NotNull final String uuid) {
+        this.playerDocumentCache.remove(uuid);
     }
 
     /**
-     * Get all documents in the cache, matching a given pattern.
-     * @param pattern Pattern to be matched.
+     * Gets a party document from the cache based on it's given NanoID.
+     * @param nanoID NanoID to the document.
+     */
+    @Override
+    public Document getPartyDocument(@NotNull final String nanoID) {
+        return this.partyDocumentCache.get(nanoID);
+    }
+
+    /**
+     * Gets a player document from the cache based on a given uuid.
+     * @param uuid UUID to the document.
+     */
+    @Override
+    public Document getPlayerDocument(@NotNull final String uuid) {
+        return this.playerDocumentCache.get(uuid);
+    }
+
+    /**
+     * Get all party documents in the cache.
      * @return All documents in the cache.
      */
     @Override
-    public Collection<Document> getAll(@NotNull final String pattern) {
-        return documentCache.values();
+    public Collection<Document> getAllPartyDocuments() {
+        return partyDocumentCache.values();
+    }
+
+    /**
+     * Get all player documents in the cache.
+     * @return All player documents in the cache.
+     */
+    @Override
+    public Collection<Document> getAllPlayerDocuments() {
+        return playerDocumentCache.values();
     }
 
     /**
@@ -91,13 +118,23 @@ public class MemoryCache implements Cache {
     }
 
     /**
-     * Caches a document with a given key.
-     * @param key Key of the document being added.
+     * Adds a party document to the cache with a given NanoID.
+     * @param nanoID NanoID of the document being added.
      * @param document Document being added to the cache.
      */
     @Override
-    public void set(@NotNull final String key, @NotNull final Document document) {
-        this.documentCache.put(key, document);
+    public void setPartyDocument(@NotNull final String nanoID, @NotNull final Document document) {
+        this.partyDocumentCache.put(nanoID, document);
+    }
+
+    /**
+     * Adds a player document to the cache with a given UUID.
+     * @param uuid UUID of the document being added.
+     * @param document Document being added to the cache.
+     */
+    @Override
+    public void setPlayerDocument(@NotNull final String uuid, @NotNull final Document document) {
+        this.playerDocumentCache.put(uuid, document);
     }
 
     /**

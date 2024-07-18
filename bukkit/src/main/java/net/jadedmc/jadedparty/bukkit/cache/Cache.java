@@ -35,23 +35,40 @@ import java.util.Collection;
 public interface Cache {
 
     /**
-     * Deletes a document from the cache given key.
-     * @param key Key for the document.
+     * Deletes a party document from the cache given key.
+     * @param nanoID NanoID for the document.
      */
-    void delete(@NotNull final String key);
+    void deletePartyDocument(@NotNull final String nanoID);
 
     /**
-     * Gets a document from the cache based on it's given key.
-     * @param key Key to the document.
+     * Deletes a player document from the cache given key.
+     * @param uuid UUID for the document.
      */
-    Document get(@NotNull final String key);
+    void deletePlayerDocument(@NotNull final String uuid);
 
     /**
-     * Get all documents in the cache, matching a given pattern.
-     * @param pattern Pattern to be matched.
-     * @return All documents in the cache.
+     * Get all party documents in the cache.
+     * @return All party documents in the cache.
      */
-    Collection<Document> getAll(@NotNull final String pattern);
+    Collection<Document> getAllPartyDocuments();
+
+    /**
+     * Get all player documents in the cache.
+     * @return All player documents in the cache.
+     */
+    Collection<Document> getAllPlayerDocuments();
+
+    /**
+     * Gets a party document from the cache based on a given NanoID.
+     * @param nanoID NanoID to the document.
+     */
+    Document getPartyDocument(@NotNull final String nanoID);
+
+    /**
+     * Gets a player document from the cache based on a given uuid.
+     * @param uuid UUID to the document.
+     */
+    Document getPlayerDocument(@NotNull final String uuid);
 
     /**
      * Get the Cache's message processor.
@@ -61,11 +78,18 @@ public interface Cache {
     MessageProcessor getMessageProcessor();
 
     /**
-     * Adds a document to the cache with a given key.
-     * @param key Key of the document being added.
+     * Adds a party document to the cache with a given NanoID.
+     * @param nanoID NanoID of the document being added.
      * @param document Document being added to the cache.
      */
-    void set(@NotNull final String key, @NotNull final Document document);
+    void setPartyDocument(@NotNull final String nanoID, @NotNull final Document document);
+
+    /**
+     * Adds a player document to the cache with a given UUID.
+     * @param uuid UUID of the document being added.
+     * @param document Document being added to the cache.
+     */
+    void setPlayerDocument(@NotNull final String uuid, @NotNull final Document document);
 
     /**
      * Publishes a message to the cache.

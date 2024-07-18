@@ -57,36 +57,33 @@ public class RedisCache implements Cache {
     }
 
     /**
-     * Deletes a document from the cache given key.
-     * @param key Key for the document.
+     * Deletes a party document from the cache given key.
+     * @param nanoID NanoID for the document.
      */
     @Override
-    public void delete(@NotNull final String key) {
-        plugin.getRedis().del(key);
+    public void deletePartyDocument(@NotNull final String nanoID) {
+        plugin.getRedis().del("jadedparty:parties:" + nanoID);
     }
 
     /**
-     * Gets a document from the cache based on it's given key.
-     * @param key Key to the document.
+     * Deletes a player document from the cache given key.
+     * @param uuid UUID for the document.
      */
     @Override
-    public Document get(@NotNull final String key) {
-        try(Jedis jedis = plugin.getRedis().jedisPool().getResource()) {
-            return Document.parse(jedis.get(key));
-        }
+    public void deletePlayerDocument(@NotNull final String uuid) {
+        plugin.getRedis().del("jadedparty:players:" + uuid);
     }
 
     /**
-     * Get all documents in the cache, matching a given pattern.
-     * @param pattern Pattern to be matched.
-     * @return All documents in the cache.
+     * Get all party documents in the cache.
+     * @return All party documents in the cache.
      */
     @Override
-    public Collection<Document> getAll(@NotNull final String pattern) {
+    public Collection<Document> getAllPartyDocuments() {
         final Collection<Document> documents = new HashSet<>();
 
         try(Jedis jedis = plugin.getRedis().jedisPool().getResource()) {
-            final Set<String> keys = jedis.keys(pattern);
+            final Set<String> keys = jedis.keys("jadedparty:parties:*");
 
             for(@NotNull final String key : keys) {
                 final String json = jedis.get(key);
@@ -96,6 +93,49 @@ public class RedisCache implements Cache {
         }
 
         return documents;
+    }
+
+    /**
+     * Get all player documents in the cache.
+     * @return All player documents in the cache.
+     */
+    @Override
+    public Collection<Document> getAllPlayerDocuments() {
+        final Collection<Document> documents = new HashSet<>();
+
+        try(Jedis jedis = plugin.getRedis().jedisPool().getResource()) {
+            final Set<String> keys = jedis.keys("jadedparty:players:*");
+
+            for(@NotNull final String key : keys) {
+                final String json = jedis.get(key);
+                final Document document = Document.parse(json);
+                documents.add(document);
+            }
+        }
+
+        return documents;
+    }
+
+    /**
+     * Gets a party document from the cache based on a given NanoID.
+     * @param nanoID NanoID to the document.
+     */
+    @Override
+    public Document getPartyDocument(@NotNull final String nanoID) {
+        try(Jedis jedis = plugin.getRedis().jedisPool().getResource()) {
+            return Document.parse(jedis.get("jadedparty:parties:" + nanoID));
+        }
+    }
+
+    /**
+     * Gets a player document from the cache based on a given uuid.
+     * @param uuid UUID to the document.
+     */
+    @Override
+    public Document getPlayerDocument(@NotNull final String uuid) {
+        try(Jedis jedis = plugin.getRedis().jedisPool().getResource()) {
+            return Document.parse(jedis.get("jadedparty:players:" + uuid));
+        }
     }
 
     /**
@@ -109,13 +149,23 @@ public class RedisCache implements Cache {
     }
 
     /**
-     * Caches a document with a given key.
-     * @param key Key of the document being added.
+     * Adds a party document to the cache with a given NanoID.
+     * @param nanoID NanoID of the document being added.
      * @param document Document being added to the cache.
      */
     @Override
-    public void set(@NotNull final String key, @NotNull final Document document) {
-        plugin.getRedis().set(key, document.toJson());
+    public void setPartyDocument(@NotNull final String nanoID, @NotNull final Document document) {
+        plugin.getRedis().set("jadedparty:parties:" + nanoID, document.toJson());
+    }
+
+    /**
+     * Adds a player document to the cache with a given UUID.
+     * @param uuid UUID of the document being added.
+     * @param document Document being added to the cache.
+     */
+    @Override
+    public void setPlayerDocument(@NotNull final String uuid, @NotNull final Document document) {
+        plugin.getRedis().set("jadedparty:players:" + uuid, document.toJson());
     }
 
     /**

@@ -100,7 +100,7 @@ public class MessageProcessor {
                         return;
                     }
 
-                    final Document document = plugin.getConfigManager().getCache().get("parties:" + partyNanoID);
+                    final Document document = plugin.getConfigManager().getCache().getPartyDocument(partyNanoID.toString());
 
                     // Creates a local copy of the party if it exists, otherwise
                     if(party == null) {
@@ -133,7 +133,7 @@ public class MessageProcessor {
                         return;
                     }
 
-                    final Document document = plugin.getConfigManager().getCache().get("parties:" + partyNanoID);
+                    final Document document = plugin.getConfigManager().getCache().getPartyDocument(partyNanoID.toString());
                     party.update(document);
                 }
             }
