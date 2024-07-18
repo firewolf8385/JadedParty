@@ -33,7 +33,7 @@ import org.jetbrains.annotations.NotNull;
 
 /**
  * Powers the /party create command, which lets a player create a new party.
- *
+ * <p>
  * Usage: /party create
  */
 public class PartyCreateCMD {

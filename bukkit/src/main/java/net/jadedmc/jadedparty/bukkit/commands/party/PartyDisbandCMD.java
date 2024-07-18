@@ -35,7 +35,7 @@ import org.jetbrains.annotations.NotNull;
 
 /**
  * Powers the /party disband command, which allows the player to delete their party.
- *
+ * <p>
  * Usage: /party disband
  */
 public class PartyDisbandCMD {

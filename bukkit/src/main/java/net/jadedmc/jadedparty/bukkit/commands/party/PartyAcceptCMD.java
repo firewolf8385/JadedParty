@@ -32,7 +32,7 @@ import org.jetbrains.annotations.NotNull;
 
 /**
  * Powers the /party accept command, which allows a player to accept a party invite.
- *
+ * <p>
  * Usage: /party accept [player]
  *   - [player]: The player who sent the invite.
  */
