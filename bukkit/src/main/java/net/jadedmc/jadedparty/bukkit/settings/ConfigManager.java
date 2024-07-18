@@ -35,7 +35,11 @@ import org.jetbrains.annotations.NotNull;
 
 import java.io.File;
 
+/**
+ * Manages everything configurable in the plugin.
+ */
 public final class ConfigManager {
+    private final JadedPartyBukkit plugin;
     private final Cache cache;
     private FileConfiguration config;
     private final File configFile;
@@ -47,6 +51,8 @@ public final class ConfigManager {
      * @param plugin Instance of the plugin.
      */
     public ConfigManager(@NotNull final JadedPartyBukkit plugin) {
+        this.plugin = plugin;
+
         // Loads config.yml
         this.config = plugin.getConfig();
         this.config.options().copyDefaults(true);
@@ -68,6 +74,10 @@ public final class ConfigManager {
         }
     }
 
+    /**
+     * Gets the configured party cache.
+     * @return Configured Cache.
+     */
     public Cache getCache() {
         return cache;
     }
@@ -92,6 +102,9 @@ public final class ConfigManager {
         // If the message is configured, use that one instead.
         if(messages.isSet(configMessage.getKey())) {
             message = messages.getString(configMessage.getKey());
+        }
+        else if(isDebugMode()) {
+            plugin.getLogger().info(configMessage.getKey() + " called while missing from messages.yml.");
         }
 
         // Replace newline characters from YAML with MiniMessage newline.
