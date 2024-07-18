@@ -59,7 +59,7 @@ public class PartyDisbandCMD {
 
         // Makes sure the player is in a party.
         if(party == null) {
-            ChatUtils.chat(player, plugin.getConfigManager().getMessage(ConfigMessage.PARTY_ERROR_NOT_IN_PARTY));
+            ChatUtils.chat(player, plugin.getConfigManager().getMessage(player, ConfigMessage.PARTY_ERROR_NOT_IN_PARTY));
             return;
         }
 
@@ -71,7 +71,7 @@ public class PartyDisbandCMD {
         }
 
         // Disbands the party.
-        party.sendMessage(plugin.getConfigManager().getMessage(ConfigMessage.PARTY_DISBAND_PARTY_DISBANDED));
+        party.sendMessage(plugin.getConfigManager().getMessage(player, ConfigMessage.PARTY_DISBAND_PARTY_DISBANDED));
         party.disband();
     }
 }

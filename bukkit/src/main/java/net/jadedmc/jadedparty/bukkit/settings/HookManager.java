@@ -22,42 +22,39 @@
  *  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  *  SOFTWARE.
  */
-package net.jadedmc.jadedparty.bukkit.commands.party;
+package net.jadedmc.jadedparty.bukkit.settings;
 
 import net.jadedmc.jadedparty.bukkit.JadedPartyBukkit;
-import net.jadedmc.jadedparty.bukkit.settings.ConfigMessage;
-import net.jadedmc.jadedparty.bukkit.utils.chat.ChatUtils;
-import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 
 /**
- * Powers the /party accept command, which allows a player to accept a party invite.
- * <p>
- * Usage: /party accept [player]
- *   - [player]: The player who sent the invite.
+ * Manages hooks into various third-party plugins.
  */
-public class PartyAcceptCMD {
+public class HookManager {
     private final JadedPartyBukkit plugin;
 
     /**
-     * Creates the sub command.
+     * Creates the HookManager.
      * @param plugin Instance of the plugin.
      */
-    public PartyAcceptCMD(@NotNull final JadedPartyBukkit plugin) {
+    public HookManager(@NotNull final JadedPartyBukkit plugin) {
         this.plugin = plugin;
+
+        if(usePlaceholderAPI()) {
+            // TODO: Register Placeholders if PlaceholderAPI is installed.
+
+            // If debug mode is enable, announce PlaceholderAPI support.
+            if(plugin.getConfigManager().isDebugMode()) {
+                plugin.getLogger().info("Enabling PlaceholderAPI support.");
+            }
+        }
     }
 
     /**
-     * Executes the command.
-     * @param player Player running the command.
-     * @param args Command arguments.
+     * Get if the plugin should interact with PlaceholderAPI.
+     * @return Whether PlaceholderAPI is enabled.
      */
-    public void execute(@NotNull final Player player, final String[] args) {
-
-        // Makes sure the player is using the command correctly.
-        if(args.length == 1) {
-            ChatUtils.chat(player, plugin.getConfigManager().getMessage(player, ConfigMessage.PARTY_ACCEPT_USAGE));
-            return;
-        }
+    public boolean usePlaceholderAPI() {
+        return plugin.getServer().getPluginManager().isPluginEnabled("PlaceholderAPI");
     }
 }

@@ -55,7 +55,7 @@ public class PartyCreateCMD {
     public void execute(@NotNull final Player player, final String[] args) {
         // Makes sure the player is not already in a party.
         if(plugin.getPartyManager().getLocalParties().containsPlayer(player)) {
-            ChatUtils.chat(player, plugin.getConfigManager().getMessage(ConfigMessage.PARTY_ERROR_ALREADY_IN_PARTY));
+            ChatUtils.chat(player, plugin.getConfigManager().getMessage(player, ConfigMessage.PARTY_ERROR_ALREADY_IN_PARTY));
             return;
         }
 
@@ -64,7 +64,7 @@ public class PartyCreateCMD {
         party.update();
 
         // Tell the player the party was created.
-        ChatUtils.chat(player, plugin.getConfigManager().getMessage(ConfigMessage.PARTY_CREATE_PARTY_CREATED));
+        ChatUtils.chat(player, plugin.getConfigManager().getMessage(player, ConfigMessage.PARTY_CREATE_PARTY_CREATED));
     }
 
 }

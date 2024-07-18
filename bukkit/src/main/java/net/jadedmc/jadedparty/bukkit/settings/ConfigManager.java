@@ -24,6 +24,7 @@
  */
 package net.jadedmc.jadedparty.bukkit.settings;
 
+import me.clip.placeholderapi.PlaceholderAPI;
 import net.jadedmc.jadedparty.bukkit.JadedPartyBukkit;
 import net.jadedmc.jadedparty.bukkit.cache.Cache;
 import net.jadedmc.jadedparty.bukkit.cache.CacheType;
@@ -31,6 +32,7 @@ import net.jadedmc.jadedparty.bukkit.cache.types.MemoryCache;
 import net.jadedmc.jadedparty.bukkit.cache.types.RedisCache;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
+import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 
 import java.io.File;
@@ -110,7 +112,22 @@ public final class ConfigManager {
         // Replace newline characters from YAML with MiniMessage newline.
         message = message.replace("\\n", "<newline>");
 
-        // TODO: PlaceholderAPI placeholders.
+        return message;
+    }
+
+    /**
+     * Gets a configurable message from the config with Placeholder support.
+     * @param player Player to process placeholders for.
+     * @param configMessage Targeted Configurable message.
+     * @return Configured String of the message, with placeholders.
+     */
+    public String getMessage(@NotNull final Player player, final ConfigMessage configMessage) {
+        final String message = getMessage(configMessage);
+
+        // Process placeholders if PlaceholderAPI is installed.
+        if(plugin.getHookManager().usePlaceholderAPI()) {
+            return PlaceholderAPI.setPlaceholders(player, message);
+        }
 
         return message;
     }

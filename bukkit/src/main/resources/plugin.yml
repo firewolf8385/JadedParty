@@ -5,6 +5,8 @@ api-version: 1.13
 authors: [ JadedMC ]
 description: Feature-Rich Chat Plugin Developed by JadedMC
 website: http://www.jadedmc.net
+softdepend:
+  - PlaceholderAPI
 
 commands:
   party:

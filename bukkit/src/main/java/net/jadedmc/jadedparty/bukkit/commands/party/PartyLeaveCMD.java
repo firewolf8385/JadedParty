@@ -53,20 +53,20 @@ public class PartyLeaveCMD {
         // Makes sure the player is in a party.
         final Party party = plugin.getPartyManager().getLocalPartyFromPlayer(player);
         if(party == null) {
-            ChatUtils.chat(player, plugin.getConfigManager().getMessage(ConfigMessage.PARTY_ERROR_NOT_IN_PARTY));
+            ChatUtils.chat(player, plugin.getConfigManager().getMessage(player, ConfigMessage.PARTY_ERROR_NOT_IN_PARTY));
             return;
         }
 
         // If the party leader leaves, disband the party instead.
         final PartyPlayer partyPlayer = party.getPlayer(player);
         if(partyPlayer.getRole() == PartyRole.LEADER) {
-            party.sendMessage(plugin.getConfigManager().getMessage(ConfigMessage.PARTY_DISBAND_PARTY_DISBANDED));
+            party.sendMessage(plugin.getConfigManager().getMessage(player, ConfigMessage.PARTY_DISBAND_PARTY_DISBANDED));
             party.disband();
             return;
         }
 
         // Sends the leave message with placeholders processed.
-        final String leaveMessage = plugin.getConfigManager().getMessage(ConfigMessage.PARTY_LEAVE_PLAYER_LEFT)
+        final String leaveMessage = plugin.getConfigManager().getMessage(player, ConfigMessage.PARTY_LEAVE_PLAYER_LEFT)
                         .replace("%player_name%", partyPlayer.getName());
         party.sendMessage(leaveMessage);
 

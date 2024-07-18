@@ -28,11 +28,13 @@ import net.jadedmc.jadedparty.bukkit.commands.party.PartyCMD;
 import net.jadedmc.jadedparty.bukkit.databases.Redis;
 import net.jadedmc.jadedparty.bukkit.party.PartyManager;
 import net.jadedmc.jadedparty.bukkit.settings.ConfigManager;
+import net.jadedmc.jadedparty.bukkit.settings.HookManager;
 import net.jadedmc.jadedparty.bukkit.utils.JadedUtils;
 import org.bukkit.plugin.java.JavaPlugin;
 
 public class JadedPartyBukkit extends JavaPlugin {
     private ConfigManager configManager;
+    private HookManager hookManager;
     private PartyManager partyManager;
     private Redis redis;
 
@@ -41,6 +43,7 @@ public class JadedPartyBukkit extends JavaPlugin {
         new JadedUtils(this);
 
         this.configManager = new ConfigManager(this);
+        this.hookManager = new HookManager(this);
         this.redis = new Redis(this);
         this.partyManager = new PartyManager(this);
 
@@ -57,6 +60,14 @@ public class JadedPartyBukkit extends JavaPlugin {
 
     public ConfigManager getConfigManager() {
         return this.configManager;
+    }
+
+    /**
+     * Get the Hook Manager, which controls what third-party plugins we hook into.
+     * @return HookManager.
+     */
+    public HookManager getHookManager() {
+        return hookManager;
     }
 
     public PartyManager getPartyManager() {

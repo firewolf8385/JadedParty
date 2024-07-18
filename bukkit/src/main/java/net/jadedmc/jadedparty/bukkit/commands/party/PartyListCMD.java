@@ -57,7 +57,7 @@ public class PartyListCMD {
         // Makes sure the player is in a party.
         final Party party = plugin.getPartyManager().getLocalPartyFromPlayer(player);
         if(party == null) {
-            ChatUtils.chat(player, plugin.getConfigManager().getMessage(ConfigMessage.PARTY_ERROR_NOT_IN_PARTY));
+            ChatUtils.chat(player, plugin.getConfigManager().getMessage(player, ConfigMessage.PARTY_ERROR_NOT_IN_PARTY));
             return;
         }
 
