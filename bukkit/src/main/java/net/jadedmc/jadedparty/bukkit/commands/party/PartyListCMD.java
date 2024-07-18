@@ -58,8 +58,6 @@ public class PartyListCMD {
         final Party party = plugin.getPartyManager().getLocalPartyFromPlayer(player);
         if(party == null) {
             ChatUtils.chat(player, plugin.getConfigManager().getMessage(ConfigMessage.PARTY_ERROR_NOT_IN_PARTY));
-            // TODO: Remove debug message.
-            System.out.println("No party found. Local Party Size: " + plugin.getPartyManager().getLocalParties().size());
             return;
         }
 
