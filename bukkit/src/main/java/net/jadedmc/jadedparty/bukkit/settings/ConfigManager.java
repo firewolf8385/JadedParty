@@ -37,7 +37,6 @@ import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 
 import java.io.File;
-import java.util.Collection;
 
 /**
  * Manages everything configurable in the plugin.
@@ -65,10 +64,10 @@ public final class ConfigManager {
 
         // Loads messages.yml
         messagesFile = new File(plugin.getDataFolder(), "messages.yml");
-        messages = YamlConfiguration.loadConfiguration(messagesFile);
         if(!messagesFile.exists()) {
             plugin.saveResource("messages.yml", false);
         }
+        messages = YamlConfiguration.loadConfiguration(messagesFile);
 
         // Get and load the proper cache system.
         final CacheType cacheType = CacheType.valueOf(this.config.getString("Cache.type").toUpperCase());
