@@ -66,7 +66,7 @@ public class PartyDisbandCMD {
         // Only allow the party leader to disband the party.
         final PartyPlayer partyPlayer = party.getPlayer(player.getUniqueId());
         if(partyPlayer.getRole() != PartyRole.LEADER) {
-            ChatUtils.chat(player, "<red><bold>Error</bold> <dark_gray>» <red>You do not have permission to disband the party!");
+            ChatUtils.chat(player, plugin.getConfigManager().getMessage(player, ConfigMessage.PARTY_DISBAND_NOT_ALLOWED));
             return;
         }
 
