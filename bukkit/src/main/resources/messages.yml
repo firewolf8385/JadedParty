@@ -8,8 +8,40 @@ Messages:
         USAGE: "<red><bold>Usage</bold> <dark_gray>» <red>/party accept [player]"
       Create:
         PARTY_CREATED: "<green><bold>Party</bold> <dark_gray>» <green>Party has been created."
+      Demote:
+        USAGE: "<red><bold>Usage</bold> <dark_gray>» <red>/party demote [player]"
+        NOT_ALLOWED: "<red><bold>Error</bold> <dark_gray>» <red>Only the party leader can demote members!"
+        CANNOT_DEMOTE_SELF: "<red><bold>Error</bold> <dark_gray>» <red>You cannot demote yourself!"
+        TARGET_NOT_ONLINE: "<red><bold>Error</bold> <dark_gray>» <red>That player is not online"
+        TARGET_NOT_IN_PARTY: "<red><bold>Error</bold> <dark_gray>» <red>That player is not in your party!"
+        TARGET_DEMOTED_MEMBER: "<green><bold>Party</bold> <dark_gray>» <white>%target_name% <green>has been demoted to member."
+        CANNOT_DEMOTE_MEMBER: "<red><bold>Error</bold> <dark_gray>» <red>You cannot demote that player any lower!"
       Disband:
         PARTY_DISBANDED: "<green><bold>Party</bold> <dark_gray>» <green>The party has been disbanded."
         NOT_ALLOWED: "<red><bold>Error</bold> <dark_gray>» <red>You do not have permission to disband the party!"
+      Invite:
+        NOT_ALLOWED: "<red><bold>Error</bold> <dark_gray>» <red>You do not have permission to invite other players!"
+        CANNOT_INVITE_SELF: "<red><bold>Error</bold> <dark_gray>» <red>You cannot invite yourself!"
+        TARGET_NOT_ONLINE: "<red><bold>Error</bold> <dark_gray>» <red>That player is not online"
+        TARGET_IN_PARTY: "<red><bold>Error</bold> <dark_gray>» <red>That player is already in a party!"
+        PENDING_INVITE: "<red><bold>Error</bold> <dark_gray>» <red>You already have a pending invite to that person."
+        INVITE_SENT: "<green><bold>Party</bold> <dark_gray>» <gray>%target_name% <green>has been invited to the party."
+        INVITE_RECEIVED: |
+          <newline><green>▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬</green>
+          <center><green><bold>Party Invite</bold></green>
+          
+          <center><gray>%player_name% <green>has invited you to join their party!
+          
+          <center><click:run_command:'/party accept %player_name%'><hover:show_text:'<yellow>Click to accept'><yellow><bold>Click Here to Join!</bold></yellow></hover></click>
+          
+          <green>▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬</green><newline>
       Leave:
         PLAYER_LEFT: "<green><bold>Party</bold> <dark_gray>» <gray>%player_name% <green>has left the party."
+      Promote:
+        USAGE: "<red><bold>Usage</bold> <dark_gray>» <red>/party promote [player]"
+        NOT_ALLOWED: "<red><bold>Error</bold> <dark_gray>» <red>Only the party leader can promote members!"
+        CANNOT_PROMOTE_SELF: "<red><bold>Error</bold> <dark_gray>» <red>You cannot promote yourself!"
+        TARGET_NOT_ONLINE: "<red><bold>Error</bold> <dark_gray>» <red>That player is not online"
+        TARGET_NOT_IN_PARTY: "<red><bold>Error</bold> <dark_gray>» <red>That player is not in your party!"
+        TARGET_PROMOTED_MODERATOR: "<green><bold>Party</bold> <dark_gray>» <white>%target_name% <green>has been promoted to moderator."
+        TARGET_PROMOTED_LEADER: "<green><bold>Party</bold> <dark_gray>» <white>%target_name% <green>has been promoted to leader."

@@ -98,11 +98,34 @@ public class ChatUtils {
      */
     public static Component translate(String message) {
         // Checks for the "<center>" tag, which centers a message.
+        final String[] lines = message.replaceAll("\n", "<newline>").split("<newline>");
+        final StringBuilder builder = new StringBuilder();
+
+        for(final String line : lines) {
+            if(line.startsWith("<center>")) {
+                builder.append(centerText(line.replaceFirst("<center>", ""))).append("<newline>");
+            }
+            else {
+                builder.append(line).append("<newline>");
+            }
+        }
+
+        final String result = builder.toString();
+
+        if(result.contains("<newline>")) {
+            return MiniMessage.miniMessage().deserialize(replaceLegacy(result.substring(0, result.length() - 9)));
+        }
+
+        return MiniMessage.miniMessage().deserialize(replaceLegacy(result));
+
+        /*
         if(message.startsWith("<center>")) {
             message = centerText(message.replaceFirst("<center>", ""));
         }
 
-        return MiniMessage.miniMessage().deserialize(replaceLegacy(message));
+         */
+
+        //return MiniMessage.miniMessage().deserialize(replaceLegacy(message));
     }
 
     /**

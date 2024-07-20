@@ -21,6 +21,7 @@ debugMode: false
 # Instead, it will automatically remove players from the party when they leave.
 standalone: true
 
+# Modifies how party data is shared and stored.
 Cache:
   # Changes how party data is cached and shared.
   # Requires a server restart to take effect.
@@ -37,12 +38,13 @@ Cache:
     username: ""
     password: ""
 
+# Modifies how parties functionally work.
 Party:
 
   # Party ids are stored as "NanoIDs".
   # The following settings change how those Ids are generated.
   ID:
-    # The
+    # The characters that are used when generating the id. This *is* case-sensitive.
     alphabet: "abcdefghijklmnopqrstuvwxyz0123456789"
 
     # The minimum length of the party's generated ID.

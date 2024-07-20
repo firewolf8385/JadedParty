@@ -25,10 +25,17 @@
 package net.jadedmc.jadedparty.bukkit.commands.party;
 
 import net.jadedmc.jadedparty.bukkit.JadedPartyBukkit;
+import net.jadedmc.jadedparty.bukkit.party.Party;
+import net.jadedmc.jadedparty.bukkit.party.PartyPlayer;
+import net.jadedmc.jadedparty.bukkit.party.PartyRole;
 import net.jadedmc.jadedparty.bukkit.settings.ConfigMessage;
 import net.jadedmc.jadedparty.bukkit.utils.chat.ChatUtils;
+import net.jadedmc.jadedparty.bukkit.utils.player.PlayerMap;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
+
+import java.util.Collection;
+import java.util.UUID;
 
 /**
  * Powers the /party accept command, which allows a player to accept a party invite.
@@ -59,5 +66,70 @@ public class PartyAcceptCMD {
             ChatUtils.chat(player, plugin.getConfigManager().getMessage(player, ConfigMessage.PARTY_ACCEPT_USAGE));
             return;
         }
+
+        plugin.getServer().getScheduler().runTaskAsynchronously(plugin, () -> {
+            final PlayerMap<PartyPlayer> remotePlayers = plugin.getPartyManager().getRemotePartyPlayers();
+            String username = args[1];
+
+            if(!remotePlayers.contains(username)) {
+                ChatUtils.chat(player, "<red><bold>Error</bold> <dark_gray>» <red>That player is not online");
+                return;
+            }
+
+            UUID uuid = remotePlayers.get(username).getUniqueId();
+
+            Collection<Party> remoteParties = plugin.getPartyManager().getRemoteParties();
+            boolean inParty = false;
+            Party party = null;
+
+            for(Party remoteParty : remoteParties) {
+                if(remoteParty.getPlayers().contains(uuid)) {
+                    party = remoteParty;
+                    inParty = true;
+                    break;
+                }
+            }
+
+            if(!inParty) {
+                ChatUtils.chat(player, "<red><bold>Error</bold> <dark_gray>» <red>That player is not in a party");
+                return;
+            }
+
+            if(!party.getInvites().contains(player.getUniqueId())) {
+                ChatUtils.chat(player, "<red><bold>Error</bold> <dark_gray>» <red>You do not have an invite to that party.");
+                System.out.println("Invites Found: " + party.getInvites().size());
+
+                for(UUID inviteUUID : party.getInvites()) {
+                    System.out.println(inviteUUID.toString());
+                }
+                return;
+            }
+
+            // Display the other players in the party.
+            {
+                ChatUtils.chat(player, "<green>▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬</green>");
+                ChatUtils.chat(player, ChatUtils.centerText("<green><bold>You are partying with"));
+                ChatUtils.chat(player, "");
+
+                final StringBuilder members = new StringBuilder();
+                for(PartyPlayer partyPlayer : party.getPlayers().values()) {
+                    if(partyPlayer.getUniqueId().equals(player.getUniqueId())) {
+                        continue;
+                    }
+
+                    members.append("<gray>");
+                    members.append(partyPlayer.getName());
+                    members.append("<green>,");
+                }
+
+                ChatUtils.chat(player, members.substring(0, members.length() - 1));
+                ChatUtils.chat(player, "");
+                ChatUtils.chat(player, "<green>▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬</green>");
+            }
+
+            party.addPlayer(player, PartyRole.MEMBER);
+            party.update();
+            party.sendMessage("<green><bold>Party</bold> <dark_gray>» " + "<gray>" + player.getName() + " <green>has joined the party.");
+        });
     }
 }

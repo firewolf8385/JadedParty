@@ -78,6 +78,20 @@ public class PlayerMap<V> extends HashMap<UUID, V> {
         return get(pluginPlayer.getUniqueId());
     }
 
+    public V get(@NotNull final String playerUsername) {
+        for(final V object : this.values()) {
+            if(!(object instanceof PluginPlayer pluginPlayer)) {
+                continue;
+            }
+
+            if(pluginPlayer.getName().equalsIgnoreCase(playerUsername)) {
+                return object;
+            }
+        }
+
+        return null;
+    }
+
     /**
      * Gets all PluginPlayers that are on this instance.
      * @return Collection of online CustomPlayers.

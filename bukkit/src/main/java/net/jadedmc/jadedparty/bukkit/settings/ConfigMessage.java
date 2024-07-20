@@ -33,12 +33,33 @@ import org.jetbrains.annotations.NotNull;
 public enum ConfigMessage {
     PARTY_ACCEPT_USAGE("Messages.Party.Accept.USAGE", "<red><bold>Usage</bold> <dark_gray>» <red>/party accept [player]"),
     PARTY_CREATE_PARTY_CREATED("Messages.Party.Create.PARTY_CREATED", "<green><bold>Party</bold> <dark_gray>» <green>Party has been created."),
-    PARTY_DISBAND_NOW_ALLOWED("Messages.Party.Disband.NOT_ALLOWED", "<red><bold>Error</bold> <dark_gray>» <red>You do not have permission to disband the party!"),
+    PARTY_DEMOTE_CANNOT_DEMOTE_MEMBER("Messages.Party.Demote.CANNOT_DEMOTE_MEMBER", "<green><bold>Party</bold> <dark_gray>» <white>%target_name% <green>has been demoted to member."),
+    PARTY_DEMOTE_CANNOT_DEMOTE_SELF("Messages.Party.Demote.CANNOT_DEMOTE_SELF", "<red><bold>Error</bold> <dark_gray>» <red>You cannot demote yourself!"),
+    PARTY_DEMOTE_NOT_ALLOWED("Messages.Party.Demote.NOW_ALLOWED", "<red><bold>Error</bold> <dark_gray>» <red>Only the party leader can demote members!"),
+    PARTY_DEMOTE_TARGET_DEMOTED_MEMBER("Messages.Party.Demote.TARGET_DEMOTED_MEMBER", "<red><bold>Error</bold> <dark_gray>» <red>You cannot demote that player any lower!"),
+    PARTY_DEMOTE_TARGET_NOT_IN_PARTY("Messages.Party.Demote.TARGET_NOT_IN_PARTY", "<red><bold>Error</bold> <dark_gray>» <red>That player is not in your party!"),
+    PARTY_DEMOTE_TARGET_NOT_ONLINE("Messages.Party.Demote.TARGET_NOT_ONLINE", "<red><bold>Error</bold> <dark_gray>» <red>That player is not online"),
+    PARTY_DEMOTE_USAGE("Messages.Party.Demote.USAGE", "<red><bold>Usage</bold> <dark_gray>» <red>/party demote [player]"),
+    PARTY_DISBAND_NOT_ALLOWED("Messages.Party.Disband.NOT_ALLOWED", "<red><bold>Error</bold> <dark_gray>» <red>You do not have permission to disband the party!"),
     PARTY_DISBAND_PARTY_DISBANDED("Messages.Party.Disband.PARTY_DISBANDED", "<green><bold>Party</bold> <dark_gray>» <green>The party has been disbanded."),
     PARTY_ERROR_ALREADY_IN_PARTY("Messages.Party.Error.ALREADY_IN_PARTY", "<red><bold>Error</bold> <dark_gray>» <red>You are already in a party."),
     PARTY_ERROR_NOT_A_PLAYER("Messages.Party.Error.NOT_A_PLAYER", "<red><bold>Error</bold> <dark_gray>» <red>Only players can use that command."),
     PARTY_ERROR_NOT_IN_PARTY("Messages.Party.Error.NOT_IN_PARTY", "<red><bold>Error</bold> <dark_gray>» <red>You are not in a party! Create one with /p create."),
-    PARTY_LEAVE_PLAYER_LEFT("Messages.Party.Leave.PLAYER_LEFT", "<green><bold>Party</bold> <dark_gray>» <gray>%player_name% <green>has left the party.");
+    PARTY_INVITE_NOT_ALLOWED("Messages.Party.Invite.NOT_ALLOWED", "<red><bold>Error</bold> <dark_gray>» <red>You do not have permission to invite other players!"),
+    PARTY_INVITE_CANNOT_INVITE_SELF("Messages.Party.Invite.CANNOT_INVITE_SELF", "<red><bold>Error</bold> <dark_gray>» <red>You cannot invite yourself!"),
+    PARTY_INVITE_TARGET_NOT_ONLINE("Messages.Party.Invite.TARGET_NOT_ONLINE", "<red><bold>Error</bold> <dark_gray>» <red>That player is not online"),
+    PARTY_INVITE_TARGET_IN_PARTY("Messages.Party.Invite.TARGET_IN_PARTY", "<red><bold>Error</bold> <dark_gray>» <red>That player is already in a party!"),
+    PARTY_INVITE_PENDING_INVITE("Messages.Party.Invite.PENDING_INVITE", "<red><bold>Error</bold> <dark_gray>» <red>You already have a pending invite to that person."),
+    PARTY_INVITE_INVITE_SEND("Messages.Party.Invite.INVITE_SENT", "<green><bold>Party</bold> <dark_gray>» <gray>username <green>has been invited to the party."),
+    PARTY_INVITE_INVITE_RECEIVED("Messages.Party.Invite.INVITE_RECEIVED", "<red>If you see me something went wrong..."),
+    PARTY_LEAVE_PLAYER_LEFT("Messages.Party.Leave.PLAYER_LEFT", "<green><bold>Party</bold> <dark_gray>» <gray>%player_name% <green>has left the party."),
+    PARTY_PROMOTE_CANNOT_PROMOTE_SELF("Messages.Party.Promote.CANNOT_PROMOTE_SELF", "<red><bold>Error</bold> <dark_gray>» <red>You cannot promote yourself!"),
+    PARTY_PROMOTE_NOT_ALLOWED("Messages.Party.Promote.NOT_ALLOWED", "<red><bold>Error</bold> <dark_gray>» <red>Only the party leader can promote members!"),
+    PARTY_PROMOTE_TARGET_NOT_IN_PARTY("Messages.Party.Promote.TARGET_NOT_IN_PARTY", "<red><bold>Error</bold> <dark_gray>» <red>That player is not in your party!"),
+    PARTY_PROMOTE_TARGET_NOT_ONLINE("Messages.Party.Promote.TARGET_NOT_ONLINE", "<red><bold>Error</bold> <dark_gray>» <red>That player is not online"),
+    PARTY_PROMOTE_TARGET_PROMOTED_LEADER("Messages.Party.Promote.TARGET_PROMOTED_LEADER", "<green><bold>Party</bold> <dark_gray>» <white>%target_name% <green>has been promoted to leader."),
+    PARTY_PROMOTE_TARGET_PROMOTED_MODERATOR("Messages.Party.Promote.TARGET_PROMOTED_MODERATOR", "<green><bold>Party</bold> <dark_gray>» <white>%target_name% <green>has been promoted to moderator."),
+    PARTY_PROMOTE_USAGE("Messages.Party.Promote.USAGE", "<red><bold>Usage</bold> <dark_gray>» <red>/party promote [player]");
 
     private final String key;
     private final String defaultMessage;

@@ -30,12 +30,14 @@ import net.jadedmc.jadedparty.bukkit.cache.Cache;
 import net.jadedmc.jadedparty.bukkit.cache.CacheType;
 import net.jadedmc.jadedparty.bukkit.cache.types.MemoryCache;
 import net.jadedmc.jadedparty.bukkit.cache.types.RedisCache;
+import net.jadedmc.jadedparty.bukkit.utils.Tuple;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 
 import java.io.File;
+import java.util.Collection;
 
 /**
  * Manages everything configurable in the plugin.
@@ -119,18 +121,24 @@ public final class ConfigManager {
      * Gets a configurable message from the config with Placeholder support.
      * @param player Player to process placeholders for.
      * @param configMessage Targeted Configurable message.
+     * @param placeholders Placeholders to apply to the message.
      * @return Configured String of the message, with placeholders.
      */
-    public String getMessage(@NotNull final Player player, final ConfigMessage configMessage) {
+    @SafeVarargs
+    public final String getMessage(@NotNull final Player player, final ConfigMessage configMessage, final Tuple<String, String>... placeholders) {
         String message = getMessage(configMessage);
+
+        // Assigned placeholders.
+        for(final Tuple<String, String> placeholder : placeholders) {
+            message = message.replace(placeholder.getLeft(), placeholder.getRight());
+        }
+
+        // Player username placeholder.
+        message = message.replace("%player_name%", player.getName());
 
         // Process placeholders if PlaceholderAPI is installed.
         if(plugin.getHookManager().usePlaceholderAPI()) {
             return PlaceholderAPI.setPlaceholders(player, message);
-        }
-        else {
-            // Non-PlaceholderAPI placeholders.
-            message = message.replace("%player_name%", player.getName());
         }
 
         return message;

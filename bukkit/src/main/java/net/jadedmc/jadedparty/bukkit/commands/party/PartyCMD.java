@@ -37,10 +37,13 @@ public class PartyCMD implements CommandExecutor {
     private final JadedPartyBukkit plugin;
     private final PartyAcceptCMD partyAcceptCMD;
     private final PartyCreateCMD partyCreateCMD;
+    private final PartyDemoteCMD partyDemoteCMD;
     private final PartyDisbandCMD partyDisbandCMD;
     private final PartyHelpCMD partyHelpCMD;
+    private final PartyInviteCMD partyInviteCMD;
     private final PartyLeaveCMD partyLeaveCMD;
     private final PartyListCMD partyListCMD;
+    private final PartyPromoteCMD partyPromoteCMD;
 
     /**
      * Creates the command.
@@ -52,10 +55,13 @@ public class PartyCMD implements CommandExecutor {
         // Load the sub commands.
         this.partyAcceptCMD = new PartyAcceptCMD(plugin);
         this.partyCreateCMD = new PartyCreateCMD(plugin);
+        this.partyDemoteCMD = new PartyDemoteCMD(plugin);
         this.partyDisbandCMD = new PartyDisbandCMD(plugin);
         this.partyHelpCMD = new PartyHelpCMD(plugin);
+        this.partyInviteCMD = new PartyInviteCMD(plugin);
         this.partyLeaveCMD = new PartyLeaveCMD(plugin);
         this.partyListCMD = new PartyListCMD(plugin);
+        this.partyPromoteCMD = new PartyPromoteCMD(plugin);
     }
 
     /**
@@ -84,11 +90,14 @@ public class PartyCMD implements CommandExecutor {
         switch(args[0].toLowerCase()) {
             case "accept" -> partyAcceptCMD.execute(player, args);
             case "create" -> partyCreateCMD.execute(player, args);
+            case "demote" -> partyDemoteCMD.execute(player, args);
             case "disband" -> partyDisbandCMD.execute(player, args);
             case "help", "commands", "?" -> partyHelpCMD.execute(player, args);
+            case "invite" -> partyInviteCMD.execute(player, args);
             case "leave" -> partyLeaveCMD.execute(player, args);
             case "list", "online" -> partyListCMD.execute(player, args);
-            // TODO: default: invite player with said username.
+            case "promote" -> partyPromoteCMD.execute(player, args);
+            default -> partyInviteCMD.execute(player, new String[]{"invite", args[0]});
         }
 
         return true;

@@ -29,21 +29,36 @@ import net.jadedmc.jadedparty.bukkit.utils.chat.ChatUtils;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 
+/**
+ * Powers the /party help command, which displays all available party commands.
+ */
 public class PartyHelpCMD {
     private final JadedPartyBukkit plugin;
 
+    /**
+     * Creates the sub command.
+     * @param plugin Instance of the plugin.
+     */
     public PartyHelpCMD(@NotNull final JadedPartyBukkit plugin) {
         this.plugin = plugin;
     }
 
+    /**
+     * Executes the command.
+     * @param player Player running the command.
+     * @param args Command arguments.
+     */
     public void execute(@NotNull final Player player, final String[] args) {
         ChatUtils.chat(player, "<green>▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬</green>");
         ChatUtils.chat(player, ChatUtils.centerText("<green><bold>Party Commands"));
+        ChatUtils.chat(player, "  <green>/party accept <player>");
         ChatUtils.chat(player, "  <green>/party create");
+        ChatUtils.chat(player, "  <green>/party demote <player>");
         ChatUtils.chat(player, "  <green>/party disband");
         ChatUtils.chat(player, "  <green>/party invite <player>");
         ChatUtils.chat(player, "  <green>/party leave");
         ChatUtils.chat(player, "  <green>/party list");
+        ChatUtils.chat(player, "  <green>/party promote <player>");
         ChatUtils.chat(player, "<green>▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬</green>");
     }
 }

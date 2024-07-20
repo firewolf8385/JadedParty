@@ -86,6 +86,14 @@ public class Party {
     }
 
     /**
+     * Adds an invite to the party.
+     * @param playerUUID UUID of the player being invited.
+     */
+    public void addInvite(@NotNull final UUID playerUUID) {
+        this.invites.add(playerUUID);
+    }
+
+    /**
      * Adds a player to the party.
      * @param player Player to add to the party.
      * @param role Role the player has.
