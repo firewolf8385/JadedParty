@@ -59,7 +59,13 @@ public enum ConfigMessage {
     PARTY_PROMOTE_TARGET_NOT_ONLINE("Messages.Party.Promote.TARGET_NOT_ONLINE", "<red><bold>Error</bold> <dark_gray>» <red>That player is not online"),
     PARTY_PROMOTE_TARGET_PROMOTED_LEADER("Messages.Party.Promote.TARGET_PROMOTED_LEADER", "<green><bold>Party</bold> <dark_gray>» <white>%target_name% <green>has been promoted to leader."),
     PARTY_PROMOTE_TARGET_PROMOTED_MODERATOR("Messages.Party.Promote.TARGET_PROMOTED_MODERATOR", "<green><bold>Party</bold> <dark_gray>» <white>%target_name% <green>has been promoted to moderator."),
-    PARTY_PROMOTE_USAGE("Messages.Party.Promote.USAGE", "<red><bold>Usage</bold> <dark_gray>» <red>/party promote [player]");
+    PARTY_PROMOTE_USAGE("Messages.Party.Promote.USAGE", "<red><bold>Usage</bold> <dark_gray>» <red>/party promote [player]"),
+    PARTY_TRANSFER_CANNOT_TRANSFER_TO_SELF("Messages.Party.Transfer.CANNOT_TRANSFER_TO_SELF", "<red><bold>Error</bold> <dark_gray>» <red>You are already the party leader!"),
+    PARTY_TRANSFER_NOT_ALLOWED("Messages.Party.Transfer.NOT_ALLOWED", "<red><bold>Error</bold> <dark_gray>» <red>Only the party leader can transfer the party!"),
+    PARTY_TRANSFER_PARTY_TRANSFERRED("Messages.Party.Transfer.PARTY_TRANSFERRED", "<green><bold>Party</bold> <dark_gray>» <green>The party has been transferred to <gray>%target_name%<green>!"),
+    PARTY_TRANSFER_TARGET_NOT_IN_PARTY("Messages.Party.Transfer.TARGET_NOT_IN_PARTY", "<red><bold>Error</bold> <dark_gray>» <red>That player is not in your party!"),
+    PARTY_TRANSFER_TARGET_NOT_ONLINE("Messages.Party.Transfer.TARGET_NOT_ONLINE", "<red><bold>Error</bold> <dark_gray>» <red>That player is not online"),
+    PARTY_TRANSFER_USAGE("Messages.Party.Transfer.USAGE", "<red><bold>Usage</bold> <dark_gray>» <red>/party promote [player]");
 
     private final String key;
     private final String defaultMessage;

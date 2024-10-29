@@ -45,3 +45,10 @@ Messages:
         TARGET_NOT_IN_PARTY: "<red><bold>Error</bold> <dark_gray>» <red>That player is not in your party!"
         TARGET_PROMOTED_MODERATOR: "<green><bold>Party</bold> <dark_gray>» <white>%target_name% <green>has been promoted to moderator."
         TARGET_PROMOTED_LEADER: "<green><bold>Party</bold> <dark_gray>» <white>%target_name% <green>has been promoted to leader."
+      Transfer:
+        USAGE: "<red><bold>Usage</bold> <dark_gray>» <red>/party promote [player]"
+        NOT_ALLOWED: "<red><bold>Error</bold> <dark_gray>» <red>Only the party leader can transfer the party!"
+        CANNOT_TRANSFER_TO_SELF: "<red><bold>Error</bold> <dark_gray>» <red>You are already the party leader!"
+        TARGET_NOT_ONLINE: "<red><bold>Error</bold> <dark_gray>» <red>That player is not online"
+        TARGET_NOT_IN_PARTY: "<red><bold>Error</bold> <dark_gray>» <red>That player is not in your party!"
+        PARTY_TRANSFERRED: "<green><bold>Party</bold> <dark_gray>» <green>The party has been transferred to <gray>%target_name%<green>!"
