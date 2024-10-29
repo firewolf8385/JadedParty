@@ -51,7 +51,9 @@ public class RedisCache implements Cache {
         this.plugin = plugin;
 
         // Attempts to connect to Redis.
-        plugin.getRedis().connect();
+        plugin.getServer().getScheduler().scheduleSyncDelayedTask(plugin, () -> {
+            plugin.getRedis().connect();
+        }, 10);
 
         this.messageProcessor = new MessageProcessor(plugin);
     }

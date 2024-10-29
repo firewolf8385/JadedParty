@@ -44,9 +44,9 @@ public class JadedPartyBukkit extends JavaPlugin {
     public void onEnable() {
         new JadedUtils(this);
 
+        this.redis = new Redis(this);
         this.configManager = new ConfigManager(this);
         this.hookManager = new HookManager(this);
-        this.redis = new Redis(this);
         this.partyManager = new PartyManager(this);
 
         this.getServer().getMessenger().registerOutgoingPluginChannel(this, "BungeeCord");
