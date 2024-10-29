@@ -28,6 +28,7 @@ import net.jadedmc.jadedparty.bukkit.JadedPartyBukkit;
 import net.jadedmc.jadedparty.bukkit.cache.Cache;
 import net.jadedmc.jadedparty.bukkit.cache.MessageProcessor;
 import org.bson.Document;
+import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 import redis.clients.jedis.Jedis;
 
@@ -148,6 +149,17 @@ public class RedisCache implements Cache {
     @Override
     public MessageProcessor getMessageProcessor() {
         return this.messageProcessor;
+    }
+
+    /**
+     * Check if a player is stored in the cache.
+     * Mostly important for Redis.
+     * @param player Player to check if they are stored.
+     * @return true if they're in the cache, false if not.
+     */
+    @Override
+    public boolean hasPlayer(@NotNull final Player player) {
+        return plugin.getRedis().exists("jadedparty:players:" + player.getUniqueId().toString());
     }
 
     /**

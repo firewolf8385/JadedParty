@@ -61,8 +61,14 @@ public class PlayerJoinListener implements Listener {
         else {
             // For cross-server mode get their document from the remote cache.
             plugin.getServer().getScheduler().runTaskAsynchronously(plugin, () -> {
-                final Document document = plugin.getConfigManager().getCache().getPlayerDocument(player.getUniqueId().toString());
-                plugin.getPartyManager().cachePartyPlayer(document);
+                if(plugin.getConfigManager().getCache().hasPlayer(player)) {
+                    final Document document = plugin.getConfigManager().getCache().getPlayerDocument(player.getUniqueId().toString());
+                    plugin.getPartyManager().cachePartyPlayer(document);
+                }
+                else {
+                    final PartyPlayer partyPlayer = plugin.getPartyManager().cachePartyPlayer(player);
+                    plugin.getServer().getScheduler().runTaskAsynchronously(plugin, partyPlayer::silentUpdate);
+                }
             });
         }
     }

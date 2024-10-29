@@ -25,6 +25,7 @@
 package net.jadedmc.jadedparty.bukkit.cache;
 
 import org.bson.Document;
+import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Collection;
@@ -76,6 +77,14 @@ public interface Cache {
      * @return Message Processor.
      */
     MessageProcessor getMessageProcessor();
+
+    /**
+     * Check if a player is stored in the cache.
+     * Mostly important for Redis.
+     * @param player Player to check if they are stored.
+     * @return true if they're in the cache, false if not.
+     */
+    boolean hasPlayer(@NotNull final Player player);
 
     /**
      * Adds a party document to the cache with a given NanoID.

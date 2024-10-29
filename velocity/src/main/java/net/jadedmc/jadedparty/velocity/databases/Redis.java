@@ -22,54 +22,47 @@
  *  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  *  SOFTWARE.
  */
-package net.jadedmc.jadedparty.bukkit.databases;
+package net.jadedmc.jadedparty.velocity.databases;
 
-import net.jadedmc.jadedparty.bukkit.JadedPartyBukkit;
+import com.velocitypowered.api.proxy.Player;
+import net.jadedmc.jadedparty.velocity.JadedPartyVelocity;
+import net.jadedmc.jadedparty.velocity.utils.StringUtils;
+import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.minimessage.MiniMessage;
 import org.jetbrains.annotations.NotNull;
 import redis.clients.jedis.Jedis;
 import redis.clients.jedis.JedisPool;
 import redis.clients.jedis.JedisPoolConfig;
 import redis.clients.jedis.JedisPubSub;
 
-import java.util.Set;
+import java.util.Arrays;
+import java.util.UUID;
 
 /**
  * Manages the connection process to Redis.
  */
 public class Redis {
-    private final JadedPartyBukkit plugin;
-    private JedisPool jedisPool;
-    private boolean connected = false;
+    private final JadedPartyVelocity plugin;
+    private final JedisPool jedisPool;
 
-    public Redis(@NotNull final JadedPartyBukkit plugin) {
+    /**
+     * Connects to Redis.
+     * @param plugin Instance of the plugin.
+     */
+    public Redis(@NotNull final JadedPartyVelocity plugin) {
         this.plugin = plugin;
-    }
 
-    public void connect() {
-        // Grab Redis connection info.
-        final String host = plugin.getConfigManager().getConfig().getString("Cache.Redis.host");
-        final int port = plugin.getConfigManager().getConfig().getInt("Cache.Redis.port");
-        final String username = plugin.getConfigManager().getConfig().getString("Cache.Redis.username");
-        final String password = plugin.getConfigManager().getConfig().getString("Cache.Redis.password");
-
-        // Announce connection attempt in debug mode.
-        if(plugin.getConfigManager().isDebugMode()) {
-            plugin.getLogger().info("Attempting to connect to Redis at " + host + ":" + port);
-        }
-
-        // Connect to Redis and subscribe to the connection thread.
-        final JedisPoolConfig jedisPoolConfig = new JedisPoolConfig();
+        JedisPoolConfig jedisPoolConfig = new JedisPoolConfig();
         jedisPoolConfig.setMaxTotal(Integer.MAX_VALUE);
+
+        String host = plugin.getConfigManager().getConfig().getString("Redis.host");
+        int port = plugin.getConfigManager().getConfig().getInt("Redis.port");
+        String username = plugin.getConfigManager().getConfig().getString("Redis.username");
+        String password = plugin.getConfigManager().getConfig().getString("Redis.password");
+
         jedisPool = new JedisPool(jedisPoolConfig, host, port, username, password);
+
         subscribe();
-
-        // Mark Redis as connected.
-        connected = true;
-
-        // Announce successful attempt in debug mode.
-        if(plugin.getConfigManager().isDebugMode()) {
-            plugin.getLogger().info("Connected to Redis.");
-        }
     }
 
     public JedisPool jedisPool() {
@@ -80,12 +73,6 @@ public class Redis {
         try(Jedis publisher = jedisPool.getResource()) {
             publisher.publish(channel, message);
         }
-    }
-
-    public void publishAsync(@NotNull final String channel, @NotNull final String message) {
-        plugin.getServer().getScheduler().runTaskAsynchronously(plugin, () -> {
-            publish(channel, message);
-        });
     }
 
     public void set(String key, String value) {
@@ -106,24 +93,6 @@ public class Redis {
         }
     }
 
-    public Set<String> keys(@NotNull final String pattern) {
-        try(Jedis jedis = jedisPool.getResource()) {
-            return jedis.keys(pattern);
-        }
-    }
-
-    public String get(@NotNull final String key) {
-        try(Jedis jedis = jedisPool.getResource()) {
-            return jedis.get(key);
-        }
-    }
-
-    public boolean exists(@NotNull final String key) {
-        try(Jedis jedis = jedisPool.getResource()) {
-            return jedis.exists(key);
-        }
-    }
-
     public void subscribe() {
         new Thread("Redis Subscriber") {
             @Override
@@ -133,12 +102,31 @@ public class Redis {
                     jedis.subscribe(new JedisPubSub() {
                         @Override
                         public void onMessage(String channel, String msg) {
-                            plugin.getServer().getScheduler().runTask(plugin, () -> {
-                                // TODO: Replace this. plugin.getServer().getPluginManager().callEvent(new RedisMessageEvent(channel, msg));
-                            });
+                            if(!channel.equals("jadedparty")) {
+                                return;
+                            }
+
+                            String[] args = msg.split(" ");
+
+                            if(args[0].equals("message")) {
+                                String[] playerUUIDs = args[1].split(",");
+                                String message = StringUtils.join(Arrays.copyOfRange(args, 2, args.length), " ");
+                                Component formattedMessage = MiniMessage.miniMessage().deserialize(message);
+
+                                for(String playerUUID : playerUUIDs) {
+                                    UUID uuid = UUID.fromString(playerUUID);
+
+                                    if(plugin.getProxyServer().getPlayer(uuid).isEmpty()) {
+                                        continue;
+                                    }
+
+                                    Player player = plugin.getProxyServer().getPlayer(uuid).get();
+                                    player.sendMessage(formattedMessage);
+                                }
+                            }
 
                         }
-                    }, "jadedmc", "party");
+                    }, "jadedparty");
                 }
                 catch (Exception exception) {
                     exception.printStackTrace();
