@@ -24,6 +24,7 @@
  */
 package net.jadedmc.jadedparty.bukkit.party;
 
+import me.clip.placeholderapi.PlaceholderAPI;
 import net.jadedmc.jadedparty.bukkit.JadedPartyBukkit;
 import net.jadedmc.jadedparty.bukkit.utils.player.PluginPlayer;
 import org.bson.Document;
@@ -35,17 +36,29 @@ import java.util.UUID;
 public class PartyPlayer extends PluginPlayer {
     private final JadedPartyBukkit plugin;
     private PartyRole role;
+    private String prefix;
 
     public PartyPlayer(@NotNull final JadedPartyBukkit plugin, @NotNull final Document document) {
         super(UUID.fromString(document.getString("uuid")), document.getString("username"));
         this.plugin = plugin;
         this.role = PartyRole.valueOf(document.getString("role"));
+        this.prefix = document.getString("prefix");
     }
 
     public PartyPlayer(@NotNull final JadedPartyBukkit plugin, @NotNull final Player player, final PartyRole role) {
         super(player.getUniqueId(), player.getName());
         this.plugin = plugin;
         this.role = role;
+        if(plugin.getHookManager().usePlaceholderAPI()) {
+            this.prefix = PlaceholderAPI.setPlaceholders(player, plugin.getConfigManager().getConfig().getString("Player.prefix"));
+        }
+        else {
+            this.prefix = plugin.getConfigManager().getConfig().getString("Player.prefix");
+        }
+    }
+
+    public String getPrefix() {
+        return prefix;
     }
 
     public PartyRole getRole() {
@@ -62,10 +75,21 @@ public class PartyPlayer extends PluginPlayer {
     }
 
     public Document toDocument() {
-        return new Document()
+        final Document document = new Document()
                 .append("uuid", getUniqueId().toString())
                 .append("username", getName())
                 .append("role", role.toString());
+
+        final Player player = this.getBukkitPlayer();
+
+        if(plugin.getHookManager().usePlaceholderAPI() && player != null) {
+            document.append("prefix", PlaceholderAPI.setPlaceholders(player, plugin.getConfigManager().getConfig().getString("Player.prefix")));
+        }
+        else {
+            document.append("prefix", plugin.getConfigManager().getConfig().getString("Player.prefix"));
+        }
+
+        return document;
     }
 
     public void update(@NotNull final Document document) {

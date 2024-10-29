@@ -56,3 +56,6 @@ Party:
     # Configurable prefix to include in front of the randomly generated section of the ID.
     # Does not count towards the min/max length.
     prefix: ""
+
+Player:
+  prefix: ""

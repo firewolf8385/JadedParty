@@ -24,6 +24,7 @@
  */
 package net.jadedmc.jadedparty.bukkit.commands.party;
 
+import me.clip.placeholderapi.PlaceholderAPI;
 import net.jadedmc.jadedparty.bukkit.JadedPartyBukkit;
 import net.jadedmc.jadedparty.bukkit.party.Party;
 import net.jadedmc.jadedparty.bukkit.party.PartyPlayer;
@@ -66,10 +67,12 @@ public class PartyListCMD {
         final List<String> moderators = new ArrayList<>();
         final List<String> members = new ArrayList<>();
         for(PartyPlayer member : party.getPlayers().values()) {
+            final String playerLabel = member.getPrefix() + "<gray>" + member.getName();
+
             switch (member.getRole()) {
-                case LEADER -> leader = "<gray>" + member.getName();
-                case MODERATOR -> moderators.add("<gray>" + member.getName());
-                case MEMBER -> members.add("<gray>" + member.getName());
+                case LEADER -> leader = playerLabel;
+                case MODERATOR -> moderators.add(playerLabel);
+                case MEMBER -> members.add(playerLabel);
             }
         }
 
