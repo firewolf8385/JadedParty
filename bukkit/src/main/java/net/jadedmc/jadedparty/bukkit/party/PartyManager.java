@@ -33,6 +33,7 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.Collection;
+import java.util.UUID;
 
 /**
  * Manages all existing party, both Local (stored in memory) and Remote (stored in Redis).
@@ -143,6 +144,17 @@ public class PartyManager {
     @Nullable
     public Party getLocalPartyFromPlayer(@NotNull final Player player) {
         return this.localParties.getFromPlayer(player);
+    }
+
+    /**
+     * Retrieves a locally-cached party from a player's UUID.
+     * Returns null if the player is not in a party.
+     * @param uuid UUID of the player to get the party of.
+     * @return Corresponding Party object.
+     */
+    @Nullable
+    public Party getLocalPartyFromPlayer(@NotNull final UUID uuid) {
+        return this.localParties.getFromPlayer(uuid);
     }
 
     /**
