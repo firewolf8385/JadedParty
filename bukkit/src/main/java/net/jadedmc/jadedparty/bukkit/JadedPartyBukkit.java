@@ -43,6 +43,7 @@ public class JadedPartyBukkit extends JavaPlugin {
     @Override
     public void onEnable() {
         new JadedUtils(this);
+        JadedPartyAPI.initialize(this);
 
         this.redis = new Redis(this);
         this.configManager = new ConfigManager(this);
