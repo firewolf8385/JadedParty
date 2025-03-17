@@ -59,14 +59,20 @@ public class PartyInviteCMD {
      * @param args Command arguments.
      */
     public void execute(@NotNull final Player player, @NotNull final String[] args) {
+        final boolean newParty;
         Party party = plugin.getPartyManager().getLocalPartyFromPlayer(player);
 
         if(party == null) {
             // Creates the party.
             party = plugin.getPartyManager().createLocalParty(player);
-            party.update();
+            party.silentUpdate();
+            newParty = true;
 
+            party.getPlayer(player).update();
             ChatUtils.chat(player, plugin.getConfigManager().getMessage(player, ConfigMessage.PARTY_CREATE_PARTY_CREATED));
+        }
+        else {
+            newParty = false;
         }
 
         PartyPlayer partyPlayer = party.getPlayer(player.getUniqueId());
@@ -100,6 +106,16 @@ public class PartyInviteCMD {
             if(finalParty.getInvites().contains(targetPlayer.getUniqueId())) {
                 ChatUtils.chat(player, plugin.getConfigManager().getMessage(player, ConfigMessage.PARTY_INVITE_PENDING_INVITE));
                 return;
+            }
+
+            // Delay invite if the party is new.
+            if(newParty) {
+                try {
+                    Thread.sleep(500);
+                }
+                catch (InterruptedException exception) {
+                    throw new RuntimeException(exception);
+                }
             }
 
             final Tuple<String, String> placeholder = new Tuple<>("%target_name%", targetPlayer.getName());

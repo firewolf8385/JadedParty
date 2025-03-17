@@ -90,6 +90,7 @@ public class ChatUtils {
      */
     public static void chat(CommandSender commandSender, String message) {
         JadedUtils.getAdventure().sender(commandSender).sendMessage(translate(message));
+        System.out.println("[MESSAGE] " + commandSender.getName() + " received: " + message);
     }
 
     /**

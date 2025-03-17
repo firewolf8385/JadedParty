@@ -135,10 +135,12 @@ public class Redis {
                         public void onMessage(String channel, String msg) {
                             plugin.getServer().getScheduler().runTask(plugin, () -> {
                                 // TODO: Replace this. plugin.getServer().getPluginManager().callEvent(new RedisMessageEvent(channel, msg));
+                                System.out.println("[REDIS SUB] " + channel + " " + msg);
+                                plugin.getConfigManager().getCache().getMessageProcessor().process(channel, msg);
                             });
 
                         }
-                    }, "jadedmc", "party");
+                    }, "jadedparty", "party");
                 }
                 catch (Exception exception) {
                     exception.printStackTrace();

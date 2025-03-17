@@ -62,7 +62,7 @@ public class Redis {
 
         jedisPool = new JedisPool(jedisPoolConfig, host, port, username, password);
 
-        subscribe();
+        //subscribe();
     }
 
     public JedisPool jedisPool() {

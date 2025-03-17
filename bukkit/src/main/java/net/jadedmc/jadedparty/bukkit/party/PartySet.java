@@ -26,10 +26,12 @@ package net.jadedmc.jadedparty.bukkit.party;
 
 import net.jadedmc.jadedparty.bukkit.utils.player.PluginPlayer;
 import net.jadedmc.nanoid.NanoID;
+import org.bson.Document;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.Collection;
 import java.util.HashSet;
 import java.util.UUID;
 
@@ -37,7 +39,6 @@ import java.util.UUID;
  * Stores a HashSet of {@link net.jadedmc.jadedparty.bukkit.party.Party} objects.
  */
 public class PartySet extends HashSet<Party> {
-
     /**
      * Checks if one of the parties in the Set have a given Player.
      * @param playerUUID UUID of the player to check the parties for.

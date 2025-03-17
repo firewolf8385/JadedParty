@@ -63,6 +63,8 @@ public class PartyCreateCMD {
         final Party party = plugin.getPartyManager().createLocalParty(player);
         party.update();
 
+        party.getPlayer(player).update();
+
         // Tell the player the party was created.
         ChatUtils.chat(player, plugin.getConfigManager().getMessage(player, ConfigMessage.PARTY_CREATE_PARTY_CREATED));
     }

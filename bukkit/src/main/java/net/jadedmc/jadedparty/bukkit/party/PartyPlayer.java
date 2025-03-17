@@ -49,11 +49,13 @@ public class PartyPlayer extends PluginPlayer {
         super(player.getUniqueId(), player.getName());
         this.plugin = plugin;
         this.role = role;
+
         if(plugin.getHookManager().usePlaceholderAPI()) {
             this.prefix = PlaceholderAPI.setPlaceholders(player, plugin.getConfigManager().getConfig().getString("Player.prefix"));
         }
         else {
             this.prefix = plugin.getConfigManager().getConfig().getString("Player.prefix");
+            System.out.println("[PREFIX] No PlaceholderAPI");
         }
     }
 
@@ -87,6 +89,7 @@ public class PartyPlayer extends PluginPlayer {
         }
         else {
             document.append("prefix", plugin.getConfigManager().getConfig().getString("Player.prefix"));
+            System.out.println("[PREFIX] Player is offline: " + getName());
         }
 
         return document;
@@ -94,6 +97,7 @@ public class PartyPlayer extends PluginPlayer {
 
     public void update(@NotNull final Document document) {
         this.role = PartyRole.valueOf(document.getString("role"));
+        this.prefix = document.getString("prefix");
     }
 
     public void update() {

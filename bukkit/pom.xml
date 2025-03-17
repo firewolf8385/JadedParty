@@ -113,5 +113,13 @@
             <version>2.11.6</version>
             <scope>provided</scope>
         </dependency>
+
+        <!-- JadedChat -->
+        <dependency>
+            <groupId>com.github.JadedMC</groupId>
+            <artifactId>JadedChat</artifactId>
+            <version>d2e59ead74</version>
+            <scope>provided</scope>
+        </dependency>
     </dependencies>
 </project>

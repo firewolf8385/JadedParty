@@ -84,7 +84,14 @@ public class PartyAcceptCMD {
 
             for(Party remoteParty : remoteParties) {
                 if(remoteParty.getPlayers().contains(uuid)) {
-                    party = remoteParty;
+                    Party localParty = plugin.getPartyManager().getLocalPartyFromNanoID(remoteParty.getNanoID());
+                    if(localParty != null) {
+                        party = localParty;
+                    }
+                    else {
+                        party = remoteParty;
+                    }
+
                     inParty = true;
                     break;
                 }
@@ -130,6 +137,10 @@ public class PartyAcceptCMD {
             party.addPlayer(player, PartyRole.MEMBER);
             party.update();
             party.sendMessage("<green><bold>Party</bold> <dark_gray>» " + "<gray>" + player.getName() + " <green>has joined the party.");
+
+            if(plugin.getPartyManager().getLocalPartyFromNanoID(party.getNanoID()) == null) {
+                plugin.getPartyManager().cacheParty(party);
+            }
         });
     }
 }

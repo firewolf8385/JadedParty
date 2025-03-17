@@ -25,7 +25,9 @@
 package net.jadedmc.jadedparty.bukkit;
 
 import net.jadedmc.jadedparty.bukkit.party.Party;
+import net.jadedmc.jadedparty.bukkit.party.PartySet;
 import net.jadedmc.nanoid.NanoID;
+import org.bson.Document;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 
@@ -48,5 +50,15 @@ public class JadedPartyAPI {
 
     public static Party getParty(NanoID nanoID) {
         return plugin.getPartyManager().getLocalPartyFromNanoID(nanoID);
+    }
+
+    public static PartySet getRemoteParties() {
+        final PartySet partySet = new PartySet();
+
+        for(final Document document : plugin.getConfigManager().getCache().getAllPartyDocuments()) {
+
+        }
+
+        return partySet;
     }
 }

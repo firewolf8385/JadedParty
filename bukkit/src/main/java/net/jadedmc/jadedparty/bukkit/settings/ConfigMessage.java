@@ -77,7 +77,7 @@ public enum ConfigMessage {
      */
     ConfigMessage(@NotNull final String key, @NotNull final String defaultMessage) {
         this.key = key;
-        this.defaultMessage = defaultMessage;
+        this.defaultMessage = defaultMessage.replace("\n", "<newline>");
     }
 
     /**

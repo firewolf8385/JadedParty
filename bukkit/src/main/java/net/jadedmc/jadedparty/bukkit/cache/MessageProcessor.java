@@ -141,13 +141,28 @@ public class MessageProcessor {
                 case "updateplayer" -> {
                     final UUID playerUUID = UUID.fromString(args[1]);
                     final PartyPlayer partyPlayer = plugin.getPartyManager().getLocalPartyPlayers().get(playerUUID);
+                    Document document = null;
 
                     if(partyPlayer == null) {
-                        return;
+                        System.out.println("[UPDATEPLAYER] partyPlayer is null.");
+                    }
+                    else {
+                        document = plugin.getConfigManager().getCache().getPlayerDocument(playerUUID.toString());
+                        partyPlayer.update(document);
                     }
 
-                    final Document document = plugin.getConfigManager().getCache().getPlayerDocument(playerUUID.toString());
-                    partyPlayer.update(document);
+                    final Party party = plugin.getPartyManager().getLocalPartyFromPlayer(playerUUID);
+
+                    if(party == null) {
+                        System.out.println("[UPDATEPLAYER] party is null");
+                    }
+                    else {
+                        if(document == null) {
+                            document = plugin.getConfigManager().getCache().getPlayerDocument(playerUUID.toString());
+                        }
+
+                        party.getPlayer(playerUUID).update(document);
+                    }
                 }
             }
         });
@@ -170,6 +185,7 @@ public class MessageProcessor {
 
                     // Loop through all specified players in the message.
                     for(final String playerUUID : playerUUIDs) {
+                        System.out.println("[MESSAGE] Sending message to " + playerUUID);
                         final UUID uuid = UUID.fromString(playerUUID);
 
                         // Skip the player if they are not online.

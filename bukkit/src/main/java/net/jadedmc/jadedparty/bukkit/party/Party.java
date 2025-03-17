@@ -116,6 +116,7 @@ public class Party {
         plugin.getServer().getScheduler().runTaskAsynchronously(plugin, () -> {
             plugin.getConfigManager().getCache().publish("party", "disband", this.nanoID.toString());
             plugin.getConfigManager().getCache().deletePartyDocument(this.nanoID.toString());
+            plugin.getPartyManager().deleteLocalParty(plugin.getPartyManager().getLocalPartyFromNanoID(this.nanoID));
 
             for(final PartyPlayer player : players.values()) {
                 player.setRole(PartyRole.NONE);
@@ -255,6 +256,7 @@ public class Party {
      * @param document Bson document to use.
      */
     public void update(@NotNull final Document document) {
+        System.out.println("Updating Party: " + this.nanoID);
         // Empty cached players.
         players.clear();
 
@@ -262,6 +264,7 @@ public class Party {
         final Document playersDocument = document.get("players", Document.class);
         for(@NotNull final String player : playersDocument.keySet()) {
             players.add(new PartyPlayer(plugin, playersDocument.get(player, Document.class)));
+            System.out.println("Found " + player);
         }
 
         // Empty cached invites.
@@ -272,5 +275,7 @@ public class Party {
         for(@NotNull final String uuid : inviteUUIDs) {
             this.invites.add(UUID.fromString(uuid));
         }
+
+        System.out.println("Done");
     }
 }

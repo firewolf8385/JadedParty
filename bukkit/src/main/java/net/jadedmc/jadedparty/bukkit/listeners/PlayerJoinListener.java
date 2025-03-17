@@ -24,8 +24,10 @@
  */
 package net.jadedmc.jadedparty.bukkit.listeners;
 
+import net.jadedmc.jadedparty.bukkit.JadedPartyAPI;
 import net.jadedmc.jadedparty.bukkit.JadedPartyBukkit;
 import net.jadedmc.jadedparty.bukkit.party.PartyPlayer;
+import net.jadedmc.jadedparty.bukkit.party.PartySet;
 import org.bson.Document;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -64,6 +66,9 @@ public class PlayerJoinListener implements Listener {
                 if(plugin.getConfigManager().getCache().hasPlayer(player)) {
                     final Document document = plugin.getConfigManager().getCache().getPlayerDocument(player.getUniqueId().toString());
                     plugin.getPartyManager().cachePartyPlayer(document);
+                    plugin.getPartyManager().getLocalPartyPlayers().get(player).update();
+
+                    final PartySet partySet = JadedPartyAPI.getRemoteParties();
                 }
                 else {
                     final PartyPlayer partyPlayer = plugin.getPartyManager().cachePartyPlayer(player);
